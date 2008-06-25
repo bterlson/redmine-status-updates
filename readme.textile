@@ -1,0 +1,11 @@
+h1. Redmine Status Updates
+
+This is a plugin for Redmine:"http://www.redmine.org" that allows users to create small status updates about what they're currently working on.  You can think of it as "Twitter":http://www.twitter.com on a per-project basis, within redmine.
+
+h2. Installing
+
+Simply follow the instructions found on the "Redmine Wiki":http://www.redmine.org/wiki/redmine/Plugins.
+
+h2. Usage
+
+Enable the "Statuses" module on the project settings page.  From there on out, usage should be fairly obvious.  Create new status updates by clicking the "Update your status" link on the "Status Updates" page.  Oh, and also, enjoy!

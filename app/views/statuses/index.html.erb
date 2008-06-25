@@ -1,0 +1,43 @@
+<div class="contextual">
+<%= link_to_if_authorized("Update your status", {:action => 'new', :id => @project},
+                          :class => "icon icon-add",
+                          :onclick => 'Element.show("add-status"); return false;' )%>
+</div>
+<div id="add-status" style="display:none;">
+  <h2>Update your status</h2>
+  <% labelled_tabular_form_for :status, @status, :url => { :controller => 'statuses', :action => 'create', :id => @project} do |f| %>
+    <div class="box tabular">
+      <p><%=f.text_field :message, :label => "Message", :size => 60%></p>
+    </div>
+    <%= submit_tag l(:button_save) %> <%= link_to l(:button_cancel), "#", :onclick => 'Element.hide("add-news")' %>
+  <% end %>
+</div>
+<h2>Developer Status</h2>
+<% @status_days.each do |day|
+  last_status_user = nil
+  %>
+  <h3><%=format_status_day(day)%></h3>
+  <%
+  first = true
+  last_user = nil
+  
+  @statuses_by_day[day].each do |status|
+    new_user = (last_user != status.user)
+    last_user = status.user
+    if first || new_user then %>
+      <%="</dl>" unless first %>
+      <dl>
+        <dt class="status_user"><%=status.user.name%></dt>
+    <% end
+    first = false
+    %>
+    <dd>
+      <span class="time"><%=format_time(status.created_at, false)%>:</span>
+      <%=status.message%>
+    </dd>
+  <% end %>
+<% end %>
+
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag '/plugin_assets/redmine_status/stylesheets/redmine_status' %>
+<% end %>
