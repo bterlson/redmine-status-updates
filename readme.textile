@@ -4,7 +4,7 @@ This is a plugin for "Redmine":http://www.redmine.org that allows users to creat
 
 h2. Installing
 
-Simply follow the instructions found on the "Redmine Wiki":http://www.redmine.org/wiki/redmine/Plugins.
+Simply follow the instructions found on the "Redmine Wiki":http://www.redmine.org/wiki/redmine/Plugins.  One caveat is that the plugin expect to find a stylesheet under the directory <notextile>REDMINE_DIR/plugin_assets/redmine_status/...</notextile> so either name the plugin directory redmine_status or rename the folder generated after you start up your server from whatever you named it to redmine_status.
 
 h2. Usage
 
