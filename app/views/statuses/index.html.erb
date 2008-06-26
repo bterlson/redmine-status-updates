@@ -31,9 +31,9 @@
     <% end
     first = false
     %>
-    <dd>
+    <dd class="status_message">
       <span class="time"><%=format_time(status.created_at, false)%>:</span>
-      <%=status.message%>
+      <%=textilizable(status.message)%>
     </dd>
   <% end %>
 <% end %>
