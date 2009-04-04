@@ -1,3 +1,7 @@
+Before do
+  Setting.stubs(:gravatar_enabled?).returns(true)
+end
+
 Given /^I am logged in$/ do
   @current_user = User.make
   User.stubs(:current).returns(@current_user)
@@ -27,4 +31,8 @@ end
 
 Then /^I should see "(.*)" updates$/ do |count|
   response.should have_tag("dd.status_message", :count => count.to_i)
+end
+
+Then /^I should see "(.*)" Gravatar images$/ do |count|
+  response.should have_tag("img.gravatar", :count => count.to_i)
 end

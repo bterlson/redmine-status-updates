@@ -27,7 +27,7 @@
     if first || new_user then %>
       <%="</dl>" unless first %>
       <dl>
-        <dt class="status_user"><%=status.user.name%></dt>
+        <dt class="status_user"><%= avatar(status.user) %><%=status.user.name%></dt>
     <% end
     first = false
     %>

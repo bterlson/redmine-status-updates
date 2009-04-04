@@ -1,3 +1,4 @@
 .status_user { font-weight: bold; }
 .status_message p { display: inline; }
 .time { font-weight: normal; font-size: 0.9em; }
+img.gravatar { float:left; margin: 0 10px 0 0;}
