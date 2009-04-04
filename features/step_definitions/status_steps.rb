@@ -3,9 +3,15 @@ Given /^I am logged in$/ do
   User.stubs(:current).returns(@current_user)
 end
 
-Given /^I am on the Status page$/ do
+Given /^I am a member of a project$/ do
+  @project = make_project_with_enabled_modules
+  Member.make(:project => @project, :user => @current_user)
+end
+
+
+Given /^I am on the Status page for the project$/ do
   unless @project
-    @project = Project.make
+    @project = make_project_with_enabled_modules
   end
   
   visit url_for(:controller => 'statuses', :action => 'index', :id => @project.id)
@@ -15,4 +21,10 @@ Given /^there are "(.*)" statuses$/ do |number|
   number.to_i.times do
     Status.make(:project => @project)
   end
+end
+
+
+
+Then /^I should see "(.*)" updates$/ do |count|
+  response.should have_tag("dd.status_message", :count => count.to_i)
 end
