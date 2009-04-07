@@ -8,7 +8,7 @@ class StatusesController < ApplicationController
   # Print a list of all the developer statuses.
   # TODO: Pagination, xml/json feeds.
   def index
-    @statuses = Status.recent(100).for_project(@project).by_date
+    @statuses = Status.recent_updates_for(project)
   end
   
   

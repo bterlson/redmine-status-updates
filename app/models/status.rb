@@ -32,6 +32,14 @@ class Status < ActiveRecord::Base
     return (message && message.match(Hashtag)) ? true : false
   end
 
+  def self.recent_updates_for(project=nil)
+    if project
+      return self.recent(100).by_date.for_project(project)
+    else
+      return self.recent(100).by_date
+    end
+  end
+  
   def self.recently_tagged_with(tag, project=nil)
     if project
       return self.recent(100).by_date.for_project(project).tagged_with(tag)

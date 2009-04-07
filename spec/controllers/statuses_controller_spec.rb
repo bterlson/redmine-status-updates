@@ -1,5 +1,39 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+describe StatusesController, "#index" do
+  before(:each) do
+    @current_user = mock_model(User, :admin? => false, :logged? => true, :language => :en, :allowed_to? => true)
+    User.stub!(:current).and_return(@current_user)
+
+    @project = mock_model(Project, :identifier => 'test-project', :id => 42)
+    controller.stub!(:find_project).and_return(@project)
+    controller.stub!(:project).and_return(@project)
+  end
+  
+  it "should be successful" do
+    get :index, :id => @project.id
+    response.should be_success
+  end
+
+  it "should render the index template" do
+    get :index, :id => @project.id
+    response.should render_template('index')
+  end
+
+  it "should assign Statuses for the project" do
+    statuses = []
+    5.times do
+      statuses << mock_model(Status)
+    end
+    Status.should_receive(:recent_updates_for).with(@project).and_return(statuses)
+
+    get :index, :id => @project.id
+    assigns[:statuses].should eql(statuses)
+  end
+
+
+end
+
 describe StatusesController, "#tagged" do
   before(:each) do
     @current_user = mock_model(User, :admin? => false, :logged? => true, :language => :en, :allowed_to? => true)
