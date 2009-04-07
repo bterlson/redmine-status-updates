@@ -10,7 +10,7 @@ Sham.message { Faker::Company.bs }
 Sham.position {|index| index }
 
 # Plugin Shams
-Sham.permissions {
+Sham.permissions(:unique => false) {
   [
     :view_statuses
   ]

@@ -27,6 +27,11 @@ Given /^there are "(.*)" statuses$/ do |number|
   end
 end
 
+Given /^there is "(.*)" status with a Hashtag of "(.*)"?$/ do |number, hashtag|
+  number.to_i.times do
+    Status.make(:project => @project, :message => hashtag)
+  end
+end
 
 
 Then /^I should see "(.*)" updates$/ do |count|
