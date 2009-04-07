@@ -5,9 +5,9 @@ module StatusesHelper
 
   def format_status_message(status)
     if status.has_hashtag?
-      link_hash_tags(textilizable(status.message))
+      link_hash_tags(status.message)
     else
-      textilizable(status.message)
+      status.message
     end
   end
 
@@ -15,7 +15,7 @@ module StatusesHelper
     formatted_message = []
     message.split(/ /).each do |word|
       if word.match(/^#/)
-        formatted_message << link_to(word, :controller => 'statuses', :action => 'tagged', :id => @project, :tag => strip_tags(word.sub('#','')))
+        formatted_message << link_to(word, :controller => 'statuses', :action => 'tagged', :id => @project, :tag => word.sub('#',''))
       else
         formatted_message << word
       end

@@ -10,19 +10,9 @@ end
 describe StatusesHelper, '#format_status_message' do
   include StatusesHelper
 
-  it 'should use textilizable' do
-    status = mock_model(Status, :message => 'Test', :has_hashtag? => false)
-    self.should_receive(:textilizable).with(status.message).and_return('<p>Test</p>')
-
-    format_status_message(status)
-  end
-
   it 'should link any hash tags in the Status' do
     status = mock_model(Status, :message => 'Test #ruby', :has_hashtag? => true)
-    textilized_status = '<p>Test #ruby</p>'
-    
-    self.stub!(:textilizable).and_return(textilized_status)
-    self.should_receive(:link_hash_tags).with(textilized_status)
+    self.should_receive(:link_hash_tags).with(status.message)
 
     format_status_message(status)
   end
