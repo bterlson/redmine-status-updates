@@ -47,4 +47,22 @@ class Status < ActiveRecord::Base
       return self.recent(100).by_date.tagged_with(tag)
     end
   end
+
+  # Returns the data for a tag cloud
+  #
+  # {:name => :count}
+  def self.tag_cloud
+    tagged_statuses = Status.tagged_with('')
+    cloud = {}
+    tagged_statuses.each do |status|
+      tags = status.message.scan(/#\S*/)
+      tags.each do |tag|
+        tag.sub!('#','')
+        cloud[tag] ||= 0
+        cloud[tag] += 1
+      end
+    end
+
+    cloud
+  end
 end

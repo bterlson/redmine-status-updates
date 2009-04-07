@@ -19,3 +19,12 @@ describe Status, "#has_hashtag?" do
       has_hashtag?.should be_true
   end
 end
+
+describe Status, "#tag_cloud" do
+  describe 'should return an object with' do
+    it 'the name of the tag'
+
+    it 'the count of the tag'
+
+  end
+end

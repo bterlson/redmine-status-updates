@@ -75,6 +75,7 @@ describe StatusesController, "#tag_cloud" do
     @project = mock_model(Project, :identifier => 'test-project', :id => 42)
     controller.stub!(:find_project).and_return(@project)
     controller.stub!(:project).and_return(@project)
+    Status.stub!(:tag_cloud)
   end
   
   it "should be successful" do
@@ -87,5 +88,9 @@ describe StatusesController, "#tag_cloud" do
     response.should render_template('tag_cloud')
   end
 
-  it 'should assign the tags for the view'
+  it 'should assign the tags for the view' do
+    Status.should_receive(:tag_cloud).and_return([])
+    get :tag_cloud, :id => @project.id
+    assigns[:tags].should_not be_nil
+  end
 end

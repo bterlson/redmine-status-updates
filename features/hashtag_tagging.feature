@@ -26,6 +26,7 @@ Feature: Hashtag tagging
     Given I am logged in
     And I am a member of a project
     And there are "10" statuses with a Hashtag of "#business"
+    And there are "9" statuses with a Hashtag of "#developer"
     And there are "8" statuses with a Hashtag of "#ruby"
     And there are "7" statuses with a Hashtag of "#rails"
     And there are "6" statuses with a Hashtag of "#redmine"
@@ -38,4 +39,3 @@ Feature: Hashtag tagging
 
     Then I should see "Tag Cloud"
     And I should see "10" items in the cloud
-    And I should see the top item as the largest

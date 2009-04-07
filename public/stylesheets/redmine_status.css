@@ -2,3 +2,16 @@
 .status_message p { display: inline; }
 .time { font-weight: normal; font-size: 0.9em; }
 img.gravatar { float:left; margin: 0 10px 0 0;}
+
+
+div#tag_cloud {text-align: center;}
+.bank1 {font-size: 0.2em;}
+.bank2 {font-size: 0.4em;}
+.bank3 {font-size: 0.6em;}
+.bank4 {font-size: 0.8em;}
+.bank5 {font-size: 1.0em;}
+.bank6 {font-size: 1.2em;}
+.bank7 {font-size: 1.4em;}
+.bank8 {font-size: 1.6em;}
+.bank9 {font-size: 1.8em;}
+.bank10 {font-size: 2.0em;}

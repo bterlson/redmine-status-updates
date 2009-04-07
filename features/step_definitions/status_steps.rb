@@ -67,3 +67,9 @@ end
 Then /^I am on the "(.*)" Hashtag page for the project$/ do |hashtag|
   response.should render_template('tagged')
 end
+
+Then /^I should see "(.*)" items in the cloud$/ do |count|
+  response.should have_tag("div#tag_cloud") do
+    with_tag("a[class^=bank]", :count => count.to_i)
+  end
+end

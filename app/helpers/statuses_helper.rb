@@ -23,4 +23,20 @@ module StatusesHelper
 
     return formatted_message.join(' ')
   end
+
+
+  def tag_cloud(tags, classes)
+    max, min = 0, 0
+    tags.each do |name, count|
+      max = count.to_i if count.to_i > max
+      min = count.to_i if count.to_i < min
+    end
+
+    divisor = ((max - min) / classes.size) + 1
+
+    tags.each { |name, count|
+      yield name, classes[(count.to_i - min) / divisor]
+    }
+  end
+
 end
