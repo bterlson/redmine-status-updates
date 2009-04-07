@@ -21,13 +21,21 @@ Given /^I am on the Status page for the project$/ do
   visit url_for(:controller => 'statuses', :action => 'index', :id => @project.id)
 end
 
+Given /^I am on the Hashtag page for "(.*)" on the project$/ do |hashtag|
+  unless @project
+    @project = make_project_with_enabled_modules
+  end
+  
+  visit url_for(:controller => 'statuses', :action => 'tagged', :id => @project.id, :tag => hashtag)
+end
+
 Given /^there are "(.*)" statuses$/ do |number|
   number.to_i.times do
     Status.make(:project => @project)
   end
 end
 
-Given /^there is "(.*)" status with a Hashtag of "(.*)"?$/ do |number, hashtag|
+Given /^there are "(.*)" statuses with a Hashtag of "(.*)"?$/ do |number, hashtag|
   number.to_i.times do
     Status.make(:project => @project, :message => "Test " + hashtag)
   end
