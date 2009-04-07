@@ -6,7 +6,7 @@ class StatusesController < ApplicationController
   # Print a list of all the developer statuses.
   # TODO: Pagination, xml/json feeds.
   def index
-    statuses = Status.find_all_by_project_id(@project.id, :order => "created_at DESC", :limit => 100)
+    statuses = Status.recent(100).for_project(@project).by_date
     
     @statuses_by_day = statuses.group_by{|s| s.created_at.at_beginning_of_day}
     
