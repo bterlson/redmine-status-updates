@@ -2,7 +2,9 @@ class StatusesController < ApplicationController
   unloadable
   layout 'base'
   before_filter :find_project, :authorize
-  
+
+  before_filter :find_tag, :only => [:tagged]
+
   # Print a list of all the developer statuses.
   # TODO: Pagination, xml/json feeds.
   def index
@@ -34,7 +36,7 @@ class StatusesController < ApplicationController
 
 
   def tagged
-
+    @statuses = Status.recently_tagged_with(@tag, project)
   end
 
   private
@@ -43,5 +45,13 @@ class StatusesController < ApplicationController
     @project=Project.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render_404
+  end
+
+  def project
+    @project
+  end
+
+  def find_tag
+    @tag = params[:tag]
   end
 end
