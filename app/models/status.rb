@@ -12,7 +12,7 @@ class Status < ActiveRecord::Base
   
   named_scope :recent, lambda {|number|
     {
-      :limit => 100
+      :limit => number
     }
   }
 
