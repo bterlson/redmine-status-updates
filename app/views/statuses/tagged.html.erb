@@ -1,0 +1,8 @@
+<%= render :partial => 'add_status' %>
+
+<h2>Developer Status tagged with <%= h @tag %></h2>
+<%= render :partial => 'list', :object => @statuses %>
+
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag '/plugin_assets/redmine_status/stylesheets/redmine_status' %>
+<% end %>
