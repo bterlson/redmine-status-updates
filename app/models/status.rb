@@ -24,7 +24,7 @@ class Status < ActiveRecord::Base
 
   named_scope :tagged_with, lambda {|tag|
     {
-      :conditions => ["message IN (?)", "#" + tag.to_s]
+      :conditions => ["message LIKE (?)", "%#" + tag.to_s + "%"]
     }
   }
   
