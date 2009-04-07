@@ -29,7 +29,7 @@ end
 
 Given /^there is "(.*)" status with a Hashtag of "(.*)"?$/ do |number, hashtag|
   number.to_i.times do
-    Status.make(:project => @project, :message => hashtag)
+    Status.make(:project => @project, :message => "Test " + hashtag)
   end
 end
 
@@ -40,4 +40,8 @@ end
 
 Then /^I should see "(.*)" Gravatar images$/ do |count|
   response.should have_tag("img.gravatar", :count => count.to_i)
+end
+
+Then /^I am on the "(.*)" Hashtag page for the project$/ do |hashtag|
+  response.should render_template('tagged')
 end

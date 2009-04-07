@@ -31,7 +31,12 @@ class StatusesController < ApplicationController
     
     redirect_to :back
   end
-  
+
+
+  def tagged
+
+  end
+
   private
   
   def find_project
