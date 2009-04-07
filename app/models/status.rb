@@ -58,8 +58,8 @@ class Status < ActiveRecord::Base
       tags = status.message.scan(/#\S*/)
       tags.each do |tag|
         tag.sub!('#','')
-        cloud[tag] ||= 0
-        cloud[tag] += 1
+        cloud[tag.downcase] ||= 0
+        cloud[tag.downcase] += 1
       end
     end
 
