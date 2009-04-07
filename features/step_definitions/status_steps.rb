@@ -2,6 +2,10 @@ Before do
   Setting.stubs(:gravatar_enabled?).returns(true)
 end
 
+def strip_hash_from_hashtag(hashtag)
+  hashtag.sub(/^#/,'')
+end
+
 Given /^I am logged in$/ do
   @current_user = User.make
   User.stubs(:current).returns(@current_user)
@@ -26,7 +30,7 @@ Given /^I am on the Hashtag page for "(.*)" on the project$/ do |hashtag|
     @project = make_project_with_enabled_modules
   end
   
-  visit url_for(:controller => 'statuses', :action => 'tagged', :id => @project.id, :tag => hashtag)
+  visit url_for(:controller => 'statuses', :action => 'tagged', :id => @project.id, :tag => strip_hash_from_hashtag(hashtag))
 end
 
 Given /^there are "(.*)" statuses$/ do |number|
@@ -35,7 +39,7 @@ Given /^there are "(.*)" statuses$/ do |number|
   end
 end
 
-Given /^there are "(.*)" statuses with a Hashtag of "(.*)"?$/ do |number, hashtag|
+Given /^there are "(.*)" statuses with a Hashtag of "(.*)"$/ do |number, hashtag|
   number.to_i.times do
     Status.make(:project => @project, :message => "Test " + hashtag)
   end

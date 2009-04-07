@@ -20,4 +20,3 @@ Feature: Hashtag tagging
     And I am on the Hashtag page for "#business" on the project
 
     Then I should see "15" updates
-    
