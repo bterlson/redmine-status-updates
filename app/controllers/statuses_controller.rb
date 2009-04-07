@@ -9,12 +9,6 @@ class StatusesController < ApplicationController
   # TODO: Pagination, xml/json feeds.
   def index
     @statuses = Status.recent(100).for_project(@project).by_date
-    
-    @statuses_by_day = @statuses.group_by{|s| s.created_at.at_beginning_of_day}
-    
-    # Get the days in reverse order that statuses take place on.
-    @status_days = @statuses_by_day.keys.sort.reverse
-    
   end
   
   
