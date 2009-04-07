@@ -66,3 +66,26 @@ describe StatusesController, "#tagged" do
   end
 
 end
+
+describe StatusesController, "#tag_cloud" do
+  before(:each) do
+    @current_user = mock_model(User, :admin? => false, :logged? => true, :language => :en, :allowed_to? => true)
+    User.stub!(:current).and_return(@current_user)
+
+    @project = mock_model(Project, :identifier => 'test-project', :id => 42)
+    controller.stub!(:find_project).and_return(@project)
+    controller.stub!(:project).and_return(@project)
+  end
+  
+  it "should be successful" do
+    get :tag_cloud, :id => @project.id
+    response.should be_success
+  end
+
+  it "should render the tag_cloud template" do
+    get :tag_cloud, :id => @project.id
+    response.should render_template('tag_cloud')
+  end
+
+  it 'should assign the tags for the view'
+end

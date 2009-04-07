@@ -8,7 +8,7 @@ Redmine::Plugin.register :status do
   version '0.1.0'
   
   project_module :statuses do
-    permission :view_statuses, {:statuses => [:index, :tagged]}
+    permission :view_statuses, {:statuses => [:index, :tagged, :tag_cloud]}
     permission :create_statuses, {:statuses => [:new, :create]}
   end
  

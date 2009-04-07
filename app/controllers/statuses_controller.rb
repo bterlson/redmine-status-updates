@@ -33,6 +33,9 @@ class StatusesController < ApplicationController
     @statuses = Status.recently_tagged_with(@tag, project)
   end
 
+  def tag_cloud
+  end
+
   private
   
   def find_project

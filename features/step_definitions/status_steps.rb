@@ -1,4 +1,5 @@
 Before do
+  Sham.reset
   Setting.stubs(:gravatar_enabled?).returns(true)
 end
 
@@ -32,6 +33,15 @@ Given /^I am on the Hashtag page for "(.*)" on the project$/ do |hashtag|
   
   visit url_for(:controller => 'statuses', :action => 'tagged', :id => @project.id, :tag => strip_hash_from_hashtag(hashtag))
 end
+
+Given /^I am on the Hashtag cloud page for the project$/ do
+  unless @project
+    @project = make_project_with_enabled_modules
+  end
+  
+  visit url_for(:controller => 'statuses', :action => 'tag_cloud', :id => @project.id)
+end
+
 
 Given /^there are "(.*)" statuses$/ do |number|
   number.to_i.times do
