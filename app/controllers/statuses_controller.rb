@@ -25,7 +25,7 @@ class StatusesController < ApplicationController
     @status.project_id = check_project_id(@status)
     @status.save
     
-    redirect_to :action => 'index'
+    redirect_to :action => 'index', :id => project
   end
 
 

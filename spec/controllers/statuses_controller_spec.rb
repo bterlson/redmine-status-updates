@@ -113,7 +113,7 @@ describe StatusesController, "#create" do
   it 'should redirect to the index' do
     post :create, :status => {:message => "This is a test"}, :id => @project.id
     response.should be_redirect
-    response.should redirect_to(:action => 'index')
+    response.should redirect_to(:action => 'index', :id => @project.id)
   end
 
   it 'should save a new Status' do
@@ -141,7 +141,7 @@ describe StatusesController, "#create from cross project" do
   it 'should redirect to the index' do
     post :create, :status => {:message => "This is a test", :project_id => @project.id}
     response.should be_redirect
-    response.should redirect_to(:action => 'index')
+    response.should redirect_to(:action => 'index', :id => nil)
   end
 
   it 'should save a new Status for the project' do
