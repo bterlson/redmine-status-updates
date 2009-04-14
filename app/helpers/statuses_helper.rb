@@ -44,8 +44,9 @@ module StatusesHelper
     content = ''
     content << link_to_if_authorized("All statuses", {:action => 'index', :id => @project}, :class => 'icon icon-index')
     content << link_to_if_authorized("Tag Cloud", {:action => 'tag_cloud', :id => @project}, :class => 'icon icon-comment')
-    
-    content << yield if block_given?
+
+    block_content = yield if block_given?
+    content << block_content if block_content
     
     content_tag(:div,
                 content,
