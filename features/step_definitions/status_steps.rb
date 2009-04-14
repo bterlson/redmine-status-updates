@@ -128,7 +128,7 @@ Then /^I should be able to select which project to post to$/ do
   response.should have_tag("select#status_project_id")
 end
 
-Then /^I should see a form for changing my perference$/ do
+Then /^I should see a form for changing my preference$/ do
   response.should have_tag("form#notification_preference") do
     with_tag("select#status_notification_option")
   end

@@ -12,7 +12,7 @@ Feature: Email notification Preferences
 
     Then I am on the "Notification Preferences" page
     And I should see "Notification Preference"
-    And I should see a form for changing my perference
+    And I should see a form for changing my preference
 
   Scenario: Update my notification preference
     Given I am logged in
