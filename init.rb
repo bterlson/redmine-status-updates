@@ -6,6 +6,7 @@ require 'status_user_patch'
 
 Dispatcher.to_prepare do
   User.send(:include, ::Plugin::Status::User)
+  ActiveRecord::Base.observers << :status_observer
 end
 
 Redmine::Plugin.register :status do

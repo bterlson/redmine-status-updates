@@ -68,3 +68,45 @@ describe Status, "#tag_cloud" do
     cloud.should_not have_key('Test')
   end
 end
+
+describe Status, "#recipients" do
+  it 'should include all members of the project with the "realtime" option' do
+    project = mock_model(Project)
+    project.stub!(:members).and_return do
+      returning [] do |members|
+        members << mock_model(Member, :user => mock_model(User, :mail => 'user1@example.com', :realtime_status_notification? => true ))
+        members << mock_model(Member, :user => mock_model(User, :mail => 'user2@example.com', :realtime_status_notification? => true ))
+      end
+    end
+
+    status = Status.new
+    status.project = project
+
+    status.recipients.should include('user1@example.com')
+    status.recipients.should include('user2@example.com')
+  end
+
+  it 'should not include members are not "realtime" notified' do
+    project = mock_model(Project)
+    project.stub!(:members).and_return do
+      returning [] do |members|
+        members << mock_model(Member, :user => mock_model(User, :mail => 'user1@example.com', :realtime_status_notification? => true ))
+        members << mock_model(Member, :user => mock_model(User, :mail => 'user2@example.com', :realtime_status_notification? => false ))
+      end
+    end
+
+    status = Status.new
+    status.project = project
+
+    status.recipients.should_not include('user2@example.com')
+  end
+
+  it 'should return an empty array for projects without members' do
+    project = mock_model(Project)
+    project.stub!(:members).and_return([])
+    status = Status.new
+    status.project = project
+
+    status.recipients.should eql([])
+  end
+end

@@ -2,6 +2,8 @@ class Status < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
 
+  validates_presence_of :project_id
+  
   attr_protected :project_id
   
   Hashtag = /(#\S+)/
@@ -32,6 +34,16 @@ class Status < ActiveRecord::Base
   
   def has_hashtag?
     return (message && message.match(Hashtag)) ? true : false
+  end
+
+  # Realtime recipients who should be notified
+  def recipients
+    return [] if self.project.blank?
+    returning [] do |recipients|
+      self.project.members.collect(&:user).each do |user|
+        recipients << user.mail if user.realtime_status_notification? && user.mail
+      end
+    end
   end
 
   def self.recent_updates_for(project=nil)

@@ -102,7 +102,7 @@ end
 
 describe StatusesController, "#create" do
   before(:each) do
-    @current_user = mock_model(User, :admin? => false, :logged? => true, :language => :en, :allowed_to? => true)
+    @current_user = mock_model(User, :admin? => false, :logged? => true, :language => :en, :allowed_to? => true, :name => 'Test user', :pref => {})
     User.stub!(:current).and_return(@current_user)
 
     @project = mock_model(Project, :identifier => 'test-project', :id => 42)
@@ -139,6 +139,9 @@ describe StatusesController, "#create from cross project" do
   end
 
   it 'should redirect to the index' do
+    status = mock_model(Status, :project => nil, :user_id= => nil, :project_id= => nil, :save => true)
+    Status.should_receive(:new).and_return(status)
+
     post :create, :status => {:message => "This is a test", :project_id => @project.id}
     response.should be_redirect
     response.should redirect_to(:action => 'index', :id => nil)
