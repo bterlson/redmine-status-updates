@@ -26,6 +26,10 @@ Given /^I am on the Status page for the project$/ do
   visit url_for(:controller => 'statuses', :action => 'index', :id => @project.id)
 end
 
+Given /^I am on the Status page$/ do
+  visit url_for(:controller => 'statuses', :action => 'index')
+end
+
 Given /^I am on the Homepage$/ do
   visit url_for(:controller => 'welcome')
 end
@@ -100,4 +104,12 @@ Then /^I should see the project name by each update$/ do
   response.should have_tag("dt.status_user") do
     with_tag("a", @project.name)
   end
+end
+
+Then /^I should see a "New Message" form$/ do
+  response.should have_tag("form#status")
+end
+
+Then /^I should be able to select which project to post to$/ do
+  response.should have_tag("select#status_project_id")
 end

@@ -23,3 +23,14 @@ Feature: Cross project listing
     And I should see "10" updates
     And I should see the project name by each update
 
+  Scenario: Display new message form
+    Given I am logged in
+    And I am a member of a project
+    And there are "5" statuses
+    And there are "5" statuses for another project
+    And I am on the Status page
+
+    Then I should see a "New Message" form
+    And I should be able to select which project to post to
+
+  Scenario: Post a new message from the cross project list
