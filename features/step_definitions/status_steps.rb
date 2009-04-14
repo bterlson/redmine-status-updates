@@ -1,6 +1,7 @@
 Before do
   Sham.reset
   Setting.stubs(:gravatar_enabled?).returns(true)
+  Setting.stubs(:bcc_recipients?).returns(false)
 end
 
 def strip_hash_from_hashtag(hashtag)
