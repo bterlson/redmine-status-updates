@@ -75,6 +75,10 @@ Given /^there are "(.*)" statuses for another project$/ do |number|
   end
 end
 
+Then /^my preference should be "(.*)"$/ do |value|
+  @current_user.status_notification.should_not be_nil
+  @current_user.status_notification.option.should eql(value)
+end
 
 Then /^I should see "(.*)" updates$/ do |count|
   response.should have_tag("dd.status_message", :count => count.to_i)

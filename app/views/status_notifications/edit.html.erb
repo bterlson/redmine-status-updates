@@ -2,9 +2,9 @@
 
 <h2>Notification Preference</h2>
 
-<% labelled_tabular_form_for :status_notification, @notification, :url => { :controller => 'status_notification', :action => 'update'}, :html => {:id => 'notification_preference'} do |f| %>
+<% labelled_tabular_form_for :status_notification, @notification, :url => { :controller => 'status_notifications', :action => 'update'}, :html => {:id => 'notification_preference'} do |f| %>
   <div class="box tabular">
-    <p><%=f.select :option, StatusNotification::VALID_OPTIONS.collect {|name, string| [string,name]}, :include_blank => true, :label => "Preference", :required => true %></p>
+    <p><%=f.select(:option, StatusNotification::VALID_OPTIONS.collect {|name, string| [string,name.to_s]}, :include_blank => true, :label => "Preference", :required => true )%></p>
   </div>
   <%= submit_tag l(:button_save) %>
 <% end %>

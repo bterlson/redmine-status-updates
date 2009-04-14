@@ -8,6 +8,20 @@ class StatusNotificationsController < ApplicationController
   def edit
     @notification = User.current.status_notification
   end
+
+  def update
+    @notification = User.current.status_notification
+    @notification ||= User.current.build_status_notification
+
+    @notification.option = params[:status_notification][:option] if params[:status_notification]
+    if @notification.save
+      flash[:notice] = "Preferences saved as #{@notification.option_to_string}."
+      redirect_to :controller => 'status_notifications', :action => 'edit'
+    else
+      flash[:error] = 'Could not save your preference.  Please try again'
+      render :action => 'edit'
+    end
+  end
   
   private
 
