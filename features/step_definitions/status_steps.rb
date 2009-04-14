@@ -92,6 +92,12 @@ Then /^I am on the "Status" page$/ do
   response.should render_template('index')
 end
 
+Then /^I am on the "Notification Preferences" page$/ do
+  response.should be_success
+  response.should render_template('status_notifications/edit')
+end
+
+
 Then /^I should see "(.*)" items in the cloud$/ do |count|
   response.should have_tag("div#tag_cloud") do
     with_tag("a[class^=bank]", :count => count.to_i)

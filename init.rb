@@ -1,6 +1,13 @@
 # Redmine status updates plugin
 require 'redmine'
 
+require 'dispatcher'
+require 'status_user_patch'
+
+Dispatcher.to_prepare do
+  User.send(:include, ::Plugin::Status::User)
+end
+
 Redmine::Plugin.register :status do
   name 'Redmine Status Updates'
   author 'Brian Terlson'
@@ -8,7 +15,7 @@ Redmine::Plugin.register :status do
   version '0.1.0'
   
   project_module :statuses do
-    permission :view_statuses, {:statuses => [:index, :tagged, :tag_cloud]}
+    permission :view_statuses, {:statuses => [:index, :tagged, :tag_cloud], :status_notifications => [:edit]}
     permission :create_statuses, {:statuses => [:new, :create]}
   end
  
