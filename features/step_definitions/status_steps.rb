@@ -95,3 +95,9 @@ Then /^I should see a "top" menu item called "Status updates"$/ do
     with_tag("a", "Status updates")
   end
 end
+
+Then /^I should see the project name by each update$/ do
+  response.should have_tag("dt.status_user") do
+    with_tag("a", @project.name)
+  end
+end

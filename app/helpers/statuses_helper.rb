@@ -11,6 +11,16 @@ module StatusesHelper
     end
   end
 
+  # Returns a link to the specific project for the status
+  def format_project(status)
+    return '' if @project # on project, no linking needed
+    returning '' do |values|
+      if status.project
+        values << link_to(h(status.project.name), {:controller => 'projects', :action => 'show', :id => status.project}, :class => 'smaller_project')
+      end
+    end
+  end
+
   def link_hash_tags(message)
     formatted_message = []
     message.split(/ /).each do |word|

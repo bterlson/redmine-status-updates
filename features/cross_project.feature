@@ -21,3 +21,5 @@ Feature: Cross project listing
 
     Then I am on the "Status" page
     And I should see "10" updates
+    And I should see the project name by each update
+
