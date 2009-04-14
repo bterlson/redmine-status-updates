@@ -42,8 +42,8 @@ module StatusesHelper
 
   def status_menu(&block)
     content = ''
-    content << link_to_if_authorized("All statuses", {:action => 'index', :id => @project}, :class => 'icon icon-index')
-    content << link_to_if_authorized("Tag Cloud", {:action => 'tag_cloud', :id => @project}, :class => 'icon icon-comment')
+    content << link_to("All statuses", {:action => 'index', :id => @project}, :class => 'icon icon-index')
+    content << link_to("Tag Cloud", {:action => 'tag_cloud', :id => @project}, :class => 'icon icon-comment')
 
     block_content = yield if block_given?
     content << block_content if block_content

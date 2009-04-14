@@ -1,7 +1,7 @@
 class StatusesController < ApplicationController
   unloadable
   layout 'base'
-  before_filter :find_project, :authorize
+  before_filter :find_project
 
   before_filter :find_tag, :only => [:tagged]
 
@@ -38,9 +38,12 @@ class StatusesController < ApplicationController
   end
 
   private
-  
+
+  # Finds and authorizes the user to the current project
   def find_project
-    @project=Project.find(params[:id])
+    @project=Project.find(params[:id]) unless params[:id].blank?
+    allowed = User.current.allowed_to?({:controller => params[:controller], :action => params[:action]}, @project, :global => true)
+    allowed ? true : deny_access
   rescue ActiveRecord::RecordNotFound
     render_404
   end
