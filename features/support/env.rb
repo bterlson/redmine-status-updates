@@ -16,6 +16,11 @@ require 'ruby-debug'
 require 'faker'
 require 'machinist'
 
+# Testing emails
+require 'email_spec'
+require 'email_spec/cucumber'
+
+
 # require the entire app if we're running under coverage testing,
 # so we measure 0% covered files in the report
 #

@@ -75,6 +75,16 @@ Given /^there are "(.*)" statuses for another project$/ do |number|
   end
 end
 
+Given /^I have choosen the 'realtime' notification option$/ do
+  StatusNotification.make(:user => @current_user, :option => 'realtime')
+end
+
+When /^another user posts an update$/ do
+  @other_user = User.make
+  Member.make(:project => @project, :user => @other_user)
+  Status.make(:project => @project, :user => @other_user)
+end
+
 Then /^my preference should be "(.*)"$/ do |value|
   @current_user.status_notification.should_not be_nil
   @current_user.status_notification.option.should eql(value)
@@ -132,4 +142,8 @@ Then /^I should see a form for changing my preference$/ do
   response.should have_tag("form#notification_preference") do
     with_tag("select#status_notification_option")
   end
+end
+
+def current_email_address
+  @current_user && @current_user.mail
 end

@@ -62,3 +62,8 @@ Status.blueprint do
   project
   message
 end
+
+StatusNotification.blueprint do
+  user
+  option { 'realtime' }
+end
