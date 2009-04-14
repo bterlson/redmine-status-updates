@@ -22,11 +22,7 @@ class StatusesController < ApplicationController
   def create
     @status = Status.new(params[:status])
     @status.user_id = User.current.id
-    if project
-      @status.project_id = project.id
-    else
-      @status.project_id = check_project_id(@status)
-    end
+    @status.project_id = check_project_id(@status)
     @status.save
     
     redirect_to :action => 'index'
