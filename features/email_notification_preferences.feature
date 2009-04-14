@@ -1,7 +1,7 @@
-Feature: Email notifications
+Feature: Email notification Preferences
   As a user
-  I want to recieve email notifications of Status Updates
-  So I can know when users post a new update
+  I want to configure when I receive email notifications of Status Updates
+  So I can get the information in a timely matter without being overwhelmed
 
   Scenario: View my notification preference
     Given I am logged in
