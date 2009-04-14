@@ -1,4 +1,6 @@
 class StatusNotification < ActiveRecord::Base
+  belongs_to :user
+
   VALID_OPTIONS = {
     :realtime => 'Realtime',
     :hourly => 'Hourly',

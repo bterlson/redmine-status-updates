@@ -1,5 +1,11 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+describe StatusNotification do
+  it 'should have a user association' do
+    StatusNotification.should have_association(:user, :belongs_to)
+  end
+end
+
 describe StatusNotification, '#option_to_string' do
   it 'should return nil if no option is set' do
     StatusNotification.new.option_to_string.should be_nil
