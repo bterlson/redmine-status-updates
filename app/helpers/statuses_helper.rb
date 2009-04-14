@@ -52,8 +52,8 @@ module StatusesHelper
 
   def status_menu(&block)
     content = ''
-    content << link_to("All statuses", {:action => 'index', :id => @project}, :class => 'icon icon-index')
-    content << link_to("Tag Cloud", {:action => 'tag_cloud', :id => @project}, :class => 'icon icon-comment')
+    content << link_to("All statuses", {:controller => 'statuses', :action => 'index', :id => @project}, :class => 'icon icon-index')
+    content << link_to("Tag Cloud", {:controller => 'statuses', :action => 'tag_cloud', :id => @project}, :class => 'icon icon-comment')
     content << link_to("Notification Preferences", {:controller => 'status_notifications', :action => 'edit'}, :class => 'icon icon-news')
 
     block_content = yield if block_given?
