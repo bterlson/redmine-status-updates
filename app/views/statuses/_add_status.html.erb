@@ -4,7 +4,7 @@
     <div class="box tabular">
       <p><%=f.text_field :message, :label => "Message", :size => 60, :required => true %></p>
       <% unless @project %>
-      <p><%=f.select :project_id, User.current.projects.collect{|p| [p.name, p.id]}, :label => "Project", :required => true %></p>
+      <p><%=f.select :project_id, projects_with_create_status_permission.collect{|p| [p.name, p.id]}, :label => "Project", :required => true %></p>
       <% end %>
     </div>
     <%= submit_tag l(:button_save) %> <%= link_to l(:button_cancel), "#", :onclick => 'Element.hide("add-news")' %>

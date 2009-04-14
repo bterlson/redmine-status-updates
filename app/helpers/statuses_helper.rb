@@ -63,4 +63,8 @@ module StatusesHelper
                 :class => "contextual")
 
   end
+
+  def projects_with_create_status_permission
+    User.current.projects.find(:all, :conditions => Project.allowed_to_condition(User.current, :create_statuses))
+  end
 end

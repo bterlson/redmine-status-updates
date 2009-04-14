@@ -22,10 +22,14 @@ class StatusesController < ApplicationController
   def create
     @status = Status.new(params[:status])
     @status.user_id = User.current.id
-    @status.project_id = @project.id
+    if project
+      @status.project_id = project.id
+    else
+      @status.project_id = check_project_id(@status)
+    end
     @status.save
     
-    redirect_to :back
+    redirect_to :action => 'index'
   end
 
 
@@ -50,6 +54,26 @@ class StatusesController < ApplicationController
 
   def project
     @project
+  end
+
+  # Check the project ids when creating a new status to make sure that
+  # either:
+  #
+  # * current project is set
+  # * user has permission to create_statuses on the project_id parameter
+  def check_project_id(status)
+    if project
+      if User.current.allowed_to?(:create_statuses, project)
+        return project.id
+      end
+    elsif params[:status] && params[:status][:project_id]
+      project_id = params[:status][:project_id]
+      if User.current.allowed_to?(:create_statuses, Project.find(project_id))
+        return project_id
+      end
+    else
+      return nil
+    end
   end
 
   def find_tag

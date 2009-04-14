@@ -12,7 +12,8 @@ Sham.position {|index| index }
 # Plugin Shams
 Sham.permissions(:unique => false) {
   [
-    :view_statuses
+   :view_statuses,
+   :create_statuses
   ]
 }
 

@@ -17,6 +17,10 @@ Given /^I am a member of a project$/ do
   Member.make(:project => @project, :user => @current_user)
 end
 
+Given /^I am a member of a project named "(.*)"$/ do |named|
+  @project = make_project_with_enabled_modules :name => named
+  Member.make(:project => @project, :user => @current_user)
+end
 
 Given /^I am on the Status page for the project$/ do
   unless @project

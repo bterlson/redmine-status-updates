@@ -2,6 +2,8 @@ class Status < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
 
+  attr_protected :project_id
+  
   Hashtag = /(#\S+)/
 
   named_scope :for_project, lambda {|project|
