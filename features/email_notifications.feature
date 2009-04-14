@@ -12,4 +12,4 @@ Feature: Email notifications
 
     Then I am on the "Notification Preferences" page
     And I should see "Notification Preference"
-    
+    And I should see a form for changing my perference

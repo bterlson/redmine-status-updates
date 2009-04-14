@@ -2,6 +2,14 @@
 
 <h2>Notification Preference</h2>
 
+<% labelled_tabular_form_for :status_notification, @notification, :url => { :controller => 'status_notification', :action => 'update'}, :html => {:id => 'notification_preference'} do |f| %>
+  <div class="box tabular">
+    <p><%=f.select :option, StatusNotification::VALID_OPTIONS.collect {|name, string| [string,name]}, :include_blank => true, :label => "Preference", :required => true %></p>
+  </div>
+  <%= submit_tag l(:button_save) %>
+<% end %>
+
+
 <% content_for :header_tags do %>
     <%= stylesheet_link_tag '/plugin_assets/redmine_status/stylesheets/redmine_status' %>
 <% end %>
