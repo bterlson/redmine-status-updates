@@ -166,3 +166,20 @@ describe StatusNotification, "#notify with a daily user" do
     end
   end
 end
+
+describe StatusNotification, "#notify" do
+  it 'a user who has never been notified before should always notify' do
+    @user = mock_model(User)
+    @status_notification = mock_model(StatusNotification, :user => @user)
+    @status_notification.stub!(:last_updated_at).and_return(nil)
+    @user.stub!(:status_notification).and_return(@status_notification)
+    User.stub!(:active).and_return([@user])
+    Status.stub!(:since).with(@status_notification.last_updated_at).and_return([])
+    StatusMailer.stub!(:deliver_delayed_notification)
+    @status_notification.stub!(:option).and_return('daily')
+
+    StatusMailer.should_receive(:deliver_delayed_notification).with(@user, [])
+
+    StatusNotification.notify
+  end
+end
