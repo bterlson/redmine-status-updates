@@ -143,6 +143,10 @@ Then /^I should see "(.*)" items in the cloud$/ do |count|
   end
 end
 
+Then /^I should see "(.*)" statuses in the email$/ do |count|
+  current_email.body.should have_tag('p.status_message', :count => count.to_i)
+end
+
 Then /^I should see a "top" menu item called "Status updates"$/ do
   response.should have_tag("div#top-menu") do
     with_tag("a", "Status updates")

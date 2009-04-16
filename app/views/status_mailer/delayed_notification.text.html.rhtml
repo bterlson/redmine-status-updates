@@ -2,9 +2,9 @@
 
 <% @statuses.each do |status| %>
 <hr />
-<%= h status.user.name if status.user %>:
+<p class="status_name"><%= h status.user.name if status.user %>:</p>
 
-<%= h status.message %>
+<p class="status_message"><%= h status.message %></p>
 
 <% end %>
 
