@@ -38,6 +38,32 @@ describe StatusNotification, '#validate' do
   end
 end
 
+# Standard notifications
+describe "standard notification", :shared => true do
+  it 'should find all the statuses added since the last notification' do
+    Status.should_receive(:since).with(@status_notification.last_updated_at).and_return(@statuses)
+    StatusNotification.notify
+  end
+
+  it 'should send a digest email of the notifications' do
+    StatusMailer.should_receive(:deliver_delayed_notification).with(@user, @statuses)
+    StatusNotification.notify
+  end
+
+  it 'should not send a notification if there are no updates' do
+    Status.should_receive(:since).with(@status_notification.last_updated_at).and_return([])
+    StatusMailer.should_not_receive(:deliver_delayed_notification)
+    StatusNotification.notify
+  end
+
+  it 'should update the last_updated_at field to now' do
+    @now = Time.now
+    Time.stub!(:now).and_return(@now)
+    @status_notification.should_receive(:update_attribute).with(:last_updated_at, @now)
+    StatusNotification.notify
+  end
+end
+
 describe StatusNotification, "#notify with an hourly user" do
   describe 'last notified less than an hour ago' do
     it 'should not send an email' do
@@ -69,29 +95,8 @@ describe StatusNotification, "#notify with an hourly user" do
       Status.stub!(:since).with(@status_notification.last_updated_at).and_return(@statuses)
       StatusMailer.stub!(:deliver_delayed_notification)
     end
-    
-    it 'should find all the statuses added since the last notification' do
-      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return(@statuses)
-      StatusNotification.notify
-    end
 
-    it 'should send a digest email of the notifications' do
-      StatusMailer.should_receive(:deliver_delayed_notification).with(@user, @statuses)
-      StatusNotification.notify
-    end
-
-    it 'should not send a notification if there are no updates' do
-      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return([])
-      StatusMailer.should_not_receive(:deliver_delayed_notification)
-      StatusNotification.notify
-    end
-
-    it 'should update the last_updated_at field to now' do
-      @now = Time.now
-      Time.stub!(:now).and_return(@now)
-      @status_notification.should_receive(:update_attribute).with(:last_updated_at, @now)
-      StatusNotification.notify
-    end
+    it_should_behave_like "standard notification"
   end
 end
 
@@ -127,15 +132,7 @@ describe StatusNotification, "#notify with an eight hour user" do
       StatusMailer.stub!(:deliver_delayed_notification)
     end
     
-    it 'should find all the statuses added since the last notification' do
-      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return(@statuses)
-      StatusNotification.notify
-    end
-
-    it 'should send a digest email of the notifications' do
-      StatusMailer.should_receive(:deliver_delayed_notification).with(@user, @statuses)
-      StatusNotification.notify
-    end
+    it_should_behave_like "standard notification"
   end
 end
 
@@ -171,15 +168,7 @@ describe StatusNotification, "#notify with a daily user" do
       StatusMailer.stub!(:deliver_delayed_notification)
     end
     
-    it 'should find all the statuses added since the last notification' do
-      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return(@statuses)
-      StatusNotification.notify
-    end
-
-    it 'should send a digest email of the notifications' do
-      StatusMailer.should_receive(:deliver_delayed_notification).with(@user, @statuses)
-      StatusNotification.notify
-    end
+    it_should_behave_like "standard notification"
   end
 end
 
