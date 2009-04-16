@@ -19,6 +19,7 @@ class StatusNotification < ActiveRecord::Base
     User.active.each do |user|
       if user.status_notification && should_notify?(user)
         send_delayed_notification(user)
+        user.status_notification.update_attribute(:last_updated_at, Time.now)
       end
     end
   end

@@ -60,7 +60,7 @@ describe StatusNotification, "#notify with an hourly user" do
       
       ActionMailer::Base.deliveries.clear
       @user = mock_model(User)
-      @status_notification = mock_model(StatusNotification, :user => @user)
+      @status_notification = mock_model(StatusNotification, :user => @user, :update_attribute => nil)
       @status_notification.stub!(:option).and_return('hourly')
       @status_notification.stub!(:last_updated_at).and_return(@time)
       @user.stub!(:status_notification).and_return(@status_notification)
@@ -85,6 +85,13 @@ describe StatusNotification, "#notify with an hourly user" do
       StatusMailer.should_not_receive(:deliver_delayed_notification)
       StatusNotification.notify
     end
+
+    it 'should update the last_updated_at field to now' do
+      @now = Time.now
+      Time.stub!(:now).and_return(@now)
+      @status_notification.should_receive(:update_attribute).with(:last_updated_at, @now)
+      StatusNotification.notify
+    end
   end
 end
 
@@ -93,7 +100,7 @@ describe StatusNotification, "#notify with an eight hour user" do
     it 'should not send an email' do
       ActionMailer::Base.deliveries.clear
       @user = mock_model(User)
-      @status_notification = mock_model(StatusNotification, :user => @user)
+      @status_notification = mock_model(StatusNotification, :user => @user, :update_attribute => nil)
       @status_notification.should_receive(:option).and_return('eight_hours')
       @status_notification.should_receive(:last_updated_at).and_return(Time.now)
       @user.stub!(:status_notification).and_return(@status_notification)
@@ -110,7 +117,7 @@ describe StatusNotification, "#notify with an eight hour user" do
       
       ActionMailer::Base.deliveries.clear
       @user = mock_model(User)
-      @status_notification = mock_model(StatusNotification, :user => @user)
+      @status_notification = mock_model(StatusNotification, :user => @user, :update_attribute => nil)
       @status_notification.stub!(:option).and_return('eight_hours')
       @status_notification.stub!(:last_updated_at).and_return(@time)
       @user.stub!(:status_notification).and_return(@status_notification)
@@ -137,7 +144,7 @@ describe StatusNotification, "#notify with a daily user" do
     it 'should not send an email' do
       ActionMailer::Base.deliveries.clear
       @user = mock_model(User)
-      @status_notification = mock_model(StatusNotification, :user => @user)
+      @status_notification = mock_model(StatusNotification, :user => @user, :update_attribute => nil)
       @status_notification.should_receive(:option).and_return('daily')
       @status_notification.should_receive(:last_updated_at).and_return(Time.now)
       @user.stub!(:status_notification).and_return(@status_notification)
@@ -154,7 +161,7 @@ describe StatusNotification, "#notify with a daily user" do
       
       ActionMailer::Base.deliveries.clear
       @user = mock_model(User)
-      @status_notification = mock_model(StatusNotification, :user => @user)
+      @status_notification = mock_model(StatusNotification, :user => @user, :update_attribute => nil)
       @status_notification.stub!(:option).and_return('daily')
       @status_notification.stub!(:last_updated_at).and_return(@time)
       @user.stub!(:status_notification).and_return(@status_notification)
@@ -181,7 +188,7 @@ describe StatusNotification, "#notify" do
     @time = 2.hours.ago
 
     @user = mock_model(User)
-    @status_notification = mock_model(StatusNotification, :user => @user)
+    @status_notification = mock_model(StatusNotification, :user => @user, :update_attribute => nil)
     @user.stub!(:status_notification).and_return(@status_notification)
     User.stub!(:active).and_return([@user])
     @statuses = [mock_model(Status)]
