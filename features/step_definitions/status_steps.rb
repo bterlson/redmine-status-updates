@@ -99,6 +99,24 @@ Given /^I was last notified over a 'hour' ago$/ do
   @last_updated_at = @current_user.status_notification.last_updated_at
 end
 
+Given /^I was last notified over '8 hours' ago$/ do
+  unless @current_user.status_notification
+    Given "I have choosen the 'eight_hour' notification option"
+  end
+
+  @current_user.status_notification.update_attribute(:last_updated_at, 9.hours.ago)
+  @last_updated_at = @current_user.status_notification.last_updated_at
+end
+
+Given /^I was last notified over a 'day' ago$/ do
+  unless @current_user.status_notification
+    Given "I have choosen the 'daily' notification option"
+  end
+
+  @current_user.status_notification.update_attribute(:last_updated_at, 25.hours.ago)
+  @last_updated_at = @current_user.status_notification.last_updated_at
+end
+
 
 When /^another user posts an update$/ do
   @other_user = User.make
