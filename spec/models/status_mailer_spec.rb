@@ -84,6 +84,11 @@ describe StatusMailer, '#delayed_notification' do
     mail.encoded.should include(format_time(@when))
   end
 
+  it 'should not include a time if the user was never updated' do
+    @user.should_receive(:status_notification).and_return(mock_model(StatusNotification, :last_updated_at => nil))
+    StatusMailer.create_delayed_notification(@user, @statuses)
+  end
+
   it 'should have each Status author in the body' do
     mail = StatusMailer.create_delayed_notification(@user, @statuses)
     @statuses.each do |status|
