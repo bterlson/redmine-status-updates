@@ -61,6 +61,7 @@ Status.blueprint do
   user
   project
   message
+  created_at { Time.now }
 end
 
 StatusNotification.blueprint do

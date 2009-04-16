@@ -14,6 +14,9 @@ Given /^I am logged in$/ do
 end
 
 Given /^I am a member of a project$/ do
+  unless @current_user
+    Given "I am logged in"
+  end
   @project = make_project_with_enabled_modules
   Member.make(:project => @project, :user => @current_user)
 end
@@ -62,6 +65,13 @@ Given /^there are "(.*)" statuses$/ do |number|
   end
 end
 
+Given /^there are "(.*)" old statuses$/ do |number|
+  ago = @last_updated_at - (2.hours.ago)
+  number.to_i.times do
+    Status.make(:project => @project, :created_at => ago)
+  end
+end
+
 Given /^there are "(.*)" statuses with a Hashtag of "(.*)"$/ do |number, hashtag|
   number.to_i.times do
     Status.make(:project => @project, :message => "Test " + hashtag)
@@ -76,14 +86,28 @@ Given /^there are "(.*)" statuses for another project$/ do |number|
   end
 end
 
-Given /^I have choosen the 'realtime' notification option$/ do
-  StatusNotification.make(:user => @current_user, :option => 'realtime')
+Given /^I have choosen the '(.*)' notification option$/ do |option|
+  StatusNotification.make(:user => @current_user, :option => option)
 end
+
+Given /^I was last notified over a 'hour' ago$/ do
+  unless @current_user.status_notification
+    Given "I have choosen the 'hour' notification option"
+  end
+
+  @current_user.status_notification.update_attribute(:last_updated_at, 61.minutes.ago)
+  @last_updated_at = @current_user.status_notification.last_updated_at
+end
+
 
 When /^another user posts an update$/ do
   @other_user = User.make
   Member.make(:project => @project, :user => @other_user)
   Status.make(:project => @project, :user => @other_user)
+end
+
+When /^the status notification task is run$/ do
+  StatusNotification.notify
 end
 
 Then /^my preference should be "(.*)"$/ do |value|
