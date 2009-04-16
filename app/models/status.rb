@@ -31,6 +31,12 @@ class Status < ActiveRecord::Base
       :conditions => ["message LIKE (?)", "%#" + tag.to_s + "%"]
     }
   }
+
+  named_scope :since, lambda {|date|
+    {
+      :conditions => ["created_at >= ?", date]
+    }
+  }
   
   def has_hashtag?
     return (message && message.match(Hashtag)) ? true : false

@@ -37,3 +37,46 @@ describe StatusNotification, '#validate' do
     StatusNotification.new(:option => 'fake').valid?.should be_false
   end
 end
+
+describe StatusNotification, "#notify with an hourly user" do
+  describe 'last notified less than an hour ago' do
+    it 'should not send an email' do
+      ActionMailer::Base.deliveries.clear
+      @user = mock_model(User)
+      @status_notification = mock_model(StatusNotification, :user => @user)
+      @status_notification.should_receive(:option).and_return('hourly')
+      @status_notification.should_receive(:last_updated_at).and_return(Time.now)
+      @user.stub!(:status_notification).and_return(@status_notification)
+      User.should_receive(:active).and_return([@user])
+
+      StatusNotification.notify
+      ActionMailer::Base.deliveries.should be_empty
+    end
+  end
+
+  describe 'last notified over an hour ago' do
+    before(:each) do
+      @time = 6.hours.ago
+      
+      ActionMailer::Base.deliveries.clear
+      @user = mock_model(User)
+      @status_notification = mock_model(StatusNotification, :user => @user)
+      @status_notification.stub!(:option).and_return('hourly')
+      @status_notification.stub!(:last_updated_at).and_return(@time)
+      @user.stub!(:status_notification).and_return(@status_notification)
+      User.stub!(:active).and_return([@user])
+      Status.stub!(:since).with(@status_notification.last_updated_at).and_return([])
+      StatusMailer.stub!(:deliver_delayed_notification)
+    end
+    
+    it 'should find all the statuses added since the last notification' do
+      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return([])
+      StatusNotification.notify
+    end
+
+    it 'should send a digest email of the notifications' do
+      StatusMailer.should_receive(:deliver_delayed_notification).with(@user, [])
+      StatusNotification.notify
+    end
+  end
+end

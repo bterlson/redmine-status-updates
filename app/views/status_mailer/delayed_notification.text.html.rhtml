@@ -1,0 +1,12 @@
+<p>Here are the recent status updates for you since <%= format_time(h(@last_updated_at)) %>:</p>
+
+<% @statuses.each do |status| %>
+<hr />
+<%= h status.user.name if status.user %>:
+
+<%= h status.message %>
+
+<% end %>
+
+<hr />
+
