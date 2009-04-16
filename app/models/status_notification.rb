@@ -21,23 +21,27 @@ class StatusNotification < ActiveRecord::Base
         case user.status_notification.option
         when 'hourly'
           if user.status_notification.last_updated_at <= 1.hour.ago
-            StatusMailer.deliver_delayed_notification(user,
-                                                      Status.since(user.status_notification.last_updated_at))
+            send_delayed_notification(user)
           end
         when 'eight_hours'
           if user.status_notification.last_updated_at <= 8.hours.ago
-            StatusMailer.deliver_delayed_notification(user,
-                                                      Status.since(user.status_notification.last_updated_at))
+            send_delayed_notification(user)
           end
         when 'daily'
           if user.status_notification.last_updated_at <= 24.hours.ago
-            StatusMailer.deliver_delayed_notification(user,
-                                                      Status.since(user.status_notification.last_updated_at))
+            send_delayed_notification(user)
           end
         else
           # no-op: realtime or blank
         end
       end
     end
+  end
+
+  private
+  
+  def self.send_delayed_notification(user)
+    statuses = Status.since(user.status_notification.last_updated_at)
+    StatusMailer.deliver_delayed_notification(user, statuses)
   end
 end
