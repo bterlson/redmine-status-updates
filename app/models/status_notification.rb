@@ -50,7 +50,14 @@ class StatusNotification < ActiveRecord::Base
   end
   
   def self.send_delayed_notification(user)
-    statuses = Status.since(user.status_notification.last_updated_at)
-    StatusMailer.deliver_delayed_notification(user, statuses)
+    if !user.status_notification.last_updated_at.blank?
+      statuses = Status.since(user.status_notification.last_updated_at)
+    else
+      statuses = Status.find(:all)
+    end
+
+    unless statuses.empty?
+      StatusMailer.deliver_delayed_notification(user, statuses)
+    end
   end
 end

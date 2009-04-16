@@ -65,17 +65,24 @@ describe StatusNotification, "#notify with an hourly user" do
       @status_notification.stub!(:last_updated_at).and_return(@time)
       @user.stub!(:status_notification).and_return(@status_notification)
       User.stub!(:active).and_return([@user])
-      Status.stub!(:since).with(@status_notification.last_updated_at).and_return([])
+      @statuses = [mock_model(Status)]
+      Status.stub!(:since).with(@status_notification.last_updated_at).and_return(@statuses)
       StatusMailer.stub!(:deliver_delayed_notification)
     end
     
     it 'should find all the statuses added since the last notification' do
-      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return([])
+      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return(@statuses)
       StatusNotification.notify
     end
 
     it 'should send a digest email of the notifications' do
-      StatusMailer.should_receive(:deliver_delayed_notification).with(@user, [])
+      StatusMailer.should_receive(:deliver_delayed_notification).with(@user, @statuses)
+      StatusNotification.notify
+    end
+
+    it 'should not send a notification if there are no updates' do
+      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return([])
+      StatusMailer.should_not_receive(:deliver_delayed_notification)
       StatusNotification.notify
     end
   end
@@ -108,17 +115,18 @@ describe StatusNotification, "#notify with an eight hour user" do
       @status_notification.stub!(:last_updated_at).and_return(@time)
       @user.stub!(:status_notification).and_return(@status_notification)
       User.stub!(:active).and_return([@user])
-      Status.stub!(:since).with(@status_notification.last_updated_at).and_return([])
+      @statuses = [mock_model(Status)]
+      Status.stub!(:since).with(@status_notification.last_updated_at).and_return(@statuses)
       StatusMailer.stub!(:deliver_delayed_notification)
     end
     
     it 'should find all the statuses added since the last notification' do
-      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return([])
+      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return(@statuses)
       StatusNotification.notify
     end
 
     it 'should send a digest email of the notifications' do
-      StatusMailer.should_receive(:deliver_delayed_notification).with(@user, [])
+      StatusMailer.should_receive(:deliver_delayed_notification).with(@user, @statuses)
       StatusNotification.notify
     end
   end
@@ -151,35 +159,42 @@ describe StatusNotification, "#notify with a daily user" do
       @status_notification.stub!(:last_updated_at).and_return(@time)
       @user.stub!(:status_notification).and_return(@status_notification)
       User.stub!(:active).and_return([@user])
-      Status.stub!(:since).with(@status_notification.last_updated_at).and_return([])
+      @statuses = [mock_model(Status)]
+      Status.stub!(:since).with(@status_notification.last_updated_at).and_return(@statuses)
       StatusMailer.stub!(:deliver_delayed_notification)
     end
     
     it 'should find all the statuses added since the last notification' do
-      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return([])
+      Status.should_receive(:since).with(@status_notification.last_updated_at).and_return(@statuses)
       StatusNotification.notify
     end
 
     it 'should send a digest email of the notifications' do
-      StatusMailer.should_receive(:deliver_delayed_notification).with(@user, [])
+      StatusMailer.should_receive(:deliver_delayed_notification).with(@user, @statuses)
       StatusNotification.notify
     end
   end
 end
 
 describe StatusNotification, "#notify" do
-  it 'a user who has never been notified before should always notify' do
+  before(:each) do
+    @time = 2.hours.ago
+
     @user = mock_model(User)
     @status_notification = mock_model(StatusNotification, :user => @user)
-    @status_notification.stub!(:last_updated_at).and_return(nil)
     @user.stub!(:status_notification).and_return(@status_notification)
     User.stub!(:active).and_return([@user])
-    Status.stub!(:since).with(@status_notification.last_updated_at).and_return([])
-    StatusMailer.stub!(:deliver_delayed_notification)
+    @statuses = [mock_model(Status)]
     @status_notification.stub!(:option).and_return('daily')
+  end
 
-    StatusMailer.should_receive(:deliver_delayed_notification).with(@user, [])
+  it 'a user who has never been notified before should always notify' do
+    StatusMailer.stub!(:deliver_delayed_notification)
+    @status_notification.should_receive(:last_updated_at).at_least(:once).and_return(nil)
+    Status.should_receive(:find).with(:all).and_return(@statuses)
+    StatusMailer.should_receive(:deliver_delayed_notification).with(@user, @statuses)
 
     StatusNotification.notify
   end
+
 end
