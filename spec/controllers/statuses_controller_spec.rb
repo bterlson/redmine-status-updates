@@ -25,6 +25,7 @@ describe StatusesController, "#index" do
     @project = mock_model(Project, :identifier => 'test-project', :id => 42)
     controller.stub!(:find_project).and_return(@project)
     controller.stub!(:project).and_return(@project)
+    Status.stub!(:recent_updates_for)
   end
   
   it "should be successful" do
@@ -59,6 +60,7 @@ describe StatusesController, "#index for all projects" do
 
     controller.stub!(:find_project).and_return(true)
     controller.stub!(:project).and_return(nil)
+    Status.stub!(:recent_updates_for)
   end
   
   it "should be successful" do
@@ -80,6 +82,11 @@ describe StatusesController, "#index for all projects" do
 
     get :index
     assigns[:statuses].should eql(statuses)
+  end
+
+  it 'should only show Statuses for projects the user is a member of' do
+    @current_user = mock_model(User, :admin? => false, :logged? => true, :language => :en, :allowed_to? => true)
+    @current_user
   end
 end
 
@@ -178,6 +185,7 @@ describe StatusesController, "#tagged" do
     @project = mock_model(Project, :identifier => 'test-project', :id => 42)
     controller.stub!(:find_project).and_return(@project)
     controller.stub!(:project).and_return(@project)
+    Status.stub!(:recently_tagged_with)
   end
   
   it "should be successful" do

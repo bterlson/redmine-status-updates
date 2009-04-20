@@ -21,6 +21,10 @@ describe Status, "#has_hashtag?" do
 end
 
 describe Status, "#tag_cloud" do
+  before(:each) do
+    Status.stub!(:visible_to_user).and_return(Status)
+  end
+  
   def stub_some_tags(&block)
     Status.should_receive(:tagged_with).with('').and_return do
       statuses = []
@@ -108,5 +112,125 @@ describe Status, "#recipients" do
     status.project = project
 
     status.recipients.should eql([])
+  end
+end
+
+describe Status, "recent_updates_for with a project" do
+  before(:each) do
+    @project = mock_model(Project)
+    Status.stub!(:visible_to_user).and_return(Status)
+    Status.stub!(:recent).and_return(Status)
+    Status.stub!(:by_date).and_return(Status)
+    Status.stub!(:for_project).and_return(Status)
+  end
+  
+  it 'should get up to 100 updates' do
+    Status.should_receive(:recent).with(100).and_return(Status)
+    Status.recent_updates_for(@project)
+  end
+
+  it 'should order the updated by date' do
+    Status.should_receive(:by_date).and_return(Status)
+    Status.recent_updates_for(@project)
+  end
+
+  it 'should get updates only for the project' do
+    Status.should_receive(:for_project).and_return(Status)
+    Status.recent_updates_for(@project)
+  end
+
+  it 'should restrict the user to their own projects' do
+    Status.should_receive(:visible_to_user).with(User.current, @project).and_return(Status)
+    Status.recent_updates_for(@project)
+  end
+end
+
+describe Status, "recent_updates_for without a project" do
+  before(:each) do
+    Status.stub!(:visible_to_user).and_return(Status)
+    Status.stub!(:recent).and_return(Status)
+    Status.stub!(:by_date).and_return(Status)
+  end
+  
+  it 'should get up to 100 updates' do
+    Status.should_receive(:recent).with(100).and_return(Status)
+    Status.recent_updates_for(nil)
+  end
+
+  it 'should order the updated by date' do
+    Status.should_receive(:by_date).and_return(Status)
+    Status.recent_updates_for(nil)
+  end
+
+  it 'should restrict the user to their own projects' do
+    Status.should_receive(:visible_to_user).with(User.current, nil).and_return(Status)
+    Status.recent_updates_for(@project)
+  end
+end
+
+describe Status, "tagged_with with a project" do
+  before(:each) do
+    @project = mock_model(Project)
+    @tag = 'testing'
+    Status.stub!(:visible_to_user).and_return(Status)
+    Status.stub!(:recent).and_return(Status)
+    Status.stub!(:by_date).and_return(Status)
+    Status.stub!(:for_project).and_return(Status)
+    Status.stub!(:tagged_with).and_return(Status)
+  end
+  
+  it 'should get up to 100 updates' do
+    Status.should_receive(:recent).with(100).and_return(Status)
+    Status.recently_tagged_with(@tag, @project)
+  end
+
+  it 'should order the updated by date' do
+    Status.should_receive(:by_date).and_return(Status)
+    Status.recently_tagged_with(@tag, @project)
+  end
+
+  it 'should get updates only for the project' do
+    Status.should_receive(:for_project).and_return(Status)
+    Status.recently_tagged_with(@tag, @project)
+  end
+
+  it 'should get updates matching the tag' do
+    Status.should_receive(:tagged_with).with(@tag).and_return(Status)
+    Status.recently_tagged_with(@tag, @project)
+  end
+
+  it 'should restrict the user to their own projects' do
+    Status.should_receive(:visible_to_user).with(User.current, @project).and_return(Status)
+    Status.recently_tagged_with(@tag, @project)
+  end
+end
+
+describe Status, "tagged_with without a project" do
+  before(:each) do
+    @tag = 'testing'
+    Status.stub!(:visible_to_user).and_return(Status)
+    Status.stub!(:recent).and_return(Status)
+    Status.stub!(:by_date).and_return(Status)
+    Status.stub!(:tagged_with).with(@tag).and_return(Status)
+  end
+  
+  it 'should get up to 100 updates' do
+    Status.should_receive(:recent).with(100).and_return(Status)
+    Status.recently_tagged_with(@tag, nil)
+  end
+
+  it 'should order the updated by date' do
+    Status.should_receive(:by_date).and_return(Status)
+    Status.recently_tagged_with(@tag, nil)
+  end
+
+  it 'should get updates matching the tag' do
+    Status.should_receive(:tagged_with).with(@tag).and_return(Status)
+    Status.recently_tagged_with(@tag, nil)
+  end
+
+  it 'should restrict the user to their own projects' do
+    Status.should_receive(:visible_to_user).with(User.current, nil).and_return(Status)
+    Status.recently_tagged_with(@tag, nil)
   end
 end

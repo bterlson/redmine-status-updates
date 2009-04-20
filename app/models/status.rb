@@ -37,6 +37,13 @@ class Status < ActiveRecord::Base
       :conditions => ["created_at >= ?", date]
     }
   }
+
+  named_scope :visible_to_user, lambda {|user, project|
+    {
+      :conditions => Project.allowed_to_condition(user, :view_statuses, {:project => project}),
+      :include => :project
+    }
+  }
   
   def has_hashtag?
     return (message && message.match(Hashtag)) ? true : false
@@ -54,25 +61,25 @@ class Status < ActiveRecord::Base
 
   def self.recent_updates_for(project=nil)
     if project
-      return self.recent(100).by_date.for_project(project)
+      return self.visible_to_user(User.current, project).recent(100).by_date.for_project(project)
     else
-      return self.recent(100).by_date
+      return self.visible_to_user(User.current, project).recent(100).by_date
     end
   end
   
   def self.recently_tagged_with(tag, project=nil)
     if project
-      return self.recent(100).by_date.for_project(project).tagged_with(tag)
+      return self.visible_to_user(User.current, project).recent(100).by_date.for_project(project).tagged_with(tag)
     else
-      return self.recent(100).by_date.tagged_with(tag)
+      return self.visible_to_user(User.current, project).recent(100).by_date.tagged_with(tag)
     end
   end
 
   # Returns the data for a tag cloud
   #
   # {:name => :count}
-  def self.tag_cloud
-    tagged_statuses = Status.tagged_with('')
+  def self.tag_cloud(project = nil)
+    tagged_statuses = Status.visible_to_user(User.current, project).tagged_with('')
     cloud = {}
     tagged_statuses.each do |status|
       tags = status.message.scan(/#\S*/)

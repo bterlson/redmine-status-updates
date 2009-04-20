@@ -26,6 +26,14 @@ Given /^I am a member of a project named "(.*)"$/ do |named|
   Member.make(:project => @project, :user => @current_user)
 end
 
+Given /^I am a member of another project$/ do
+  unless @current_user
+    Given "I am logged in"
+  end
+  @project_two = make_project_with_enabled_modules
+  Member.make(:project => @project_two, :user => @current_user)
+end
+
 Given /^I am on the Status page for the project$/ do
   unless @project
     @project = make_project_with_enabled_modules
@@ -79,7 +87,9 @@ Given /^there are "(.*)" statuses with a Hashtag of "(.*)"$/ do |number, hashtag
 end
 
 Given /^there are "(.*)" statuses for another project$/ do |number|
-  @project_two = make_project_with_enabled_modules
+  unless @project_two
+    @project_two = make_project_with_enabled_modules
+  end
 
   number.to_i.times do
     Status.make(:project => @project_two)

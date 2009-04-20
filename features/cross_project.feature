@@ -14,6 +14,7 @@ Feature: Cross project listing
     Given I am logged in
     And I am a member of a project
     And there are "5" statuses
+    And I am a member of another project
     And there are "5" statuses for another project
     And I am on the Homepage
 
@@ -37,6 +38,7 @@ Feature: Cross project listing
     Given I am logged in
     And I am a member of a project named "Test project"
     And there are "5" statuses
+    And I am a member of another project
     And there are "5" statuses for another project
     And I am on the Status page
 

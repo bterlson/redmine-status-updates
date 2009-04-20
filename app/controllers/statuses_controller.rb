@@ -34,7 +34,7 @@ class StatusesController < ApplicationController
   end
 
   def tag_cloud
-    @tags = Status.tag_cloud
+    @tags = Status.tag_cloud(project)
   end
 
   private
