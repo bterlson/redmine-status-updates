@@ -24,14 +24,19 @@ module StatusesHelper
   def link_hash_tags(message)
     formatted_message = []
     message.split(/ /).each do |word|
-      if word.match(/^#/)
-        formatted_message << link_to(word, :controller => 'statuses', :action => 'tagged', :id => @project, :tag => word.sub('#',''))
+      if word.match(/#/)
+        formatted_message << link_to(word, :controller => 'statuses', :action => 'tagged', :id => @project, :tag => remove_non_tag_characters(word))
       else
         formatted_message << word
       end
     end
 
     return formatted_message.join(' ')
+  end
+
+  # Remove all non-alphanumeric charactors except for - or _
+  def remove_non_tag_characters(word)
+    word.gsub(/[^[:alnum:]\-_]/,'')
   end
 
 

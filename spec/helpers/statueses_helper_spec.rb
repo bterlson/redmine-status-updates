@@ -43,5 +43,25 @@ describe StatusesHelper, "#link_hash_tags" do
                                                   :action => 'tagged',
                                                   :tag => 'redmine'))
   end
-    
+
+  it 'should link a hashtag enclosed in brackets []' do
+    response = link_hash_tags('Tagging my message [#tagging]')
+    response.should have_tag('a[href=?]', url_for(:controller => 'statuses',
+                                                  :action => 'tagged',
+                                                  :tag => 'tagging'))
+  end
+
+  it 'should link a hashtag enclosed in braces {}' do
+    response = link_hash_tags('Tagging my message {#tagging}')
+    response.should have_tag('a[href=?]', url_for(:controller => 'statuses',
+                                                  :action => 'tagged',
+                                                  :tag => 'tagging'))
+  end
+
+  it 'should link a hashtag enclosed in parenthesis ()' do
+    response = link_hash_tags('Tagging my message (#tagging)')
+    response.should have_tag('a[href=?]', url_for(:controller => 'statuses',
+                                                  :action => 'tagged',
+                                                  :tag => 'tagging'))
+  end
 end
