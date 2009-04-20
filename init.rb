@@ -13,7 +13,7 @@ Redmine::Plugin.register :status do
   name 'Redmine Status Updates'
   author 'Brian Terlson'
   description 'Allow users to add small status updates about what they are working on or finished or what-have-you.'
-  version '0.1.0'
+  version '0.1.1'
   
   project_module :statuses do
     permission :view_statuses, {:statuses => [:index, :tagged, :tag_cloud], :status_notifications => [:edit, :update]}
