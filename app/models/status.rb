@@ -3,6 +3,7 @@ class Status < ActiveRecord::Base
   belongs_to :user
 
   validates_presence_of :project_id
+  extend StatusesHelper
   
   attr_protected :project_id
   
@@ -84,7 +85,7 @@ class Status < ActiveRecord::Base
     tagged_statuses.each do |status|
       tags = status.message.scan(/#\S*/)
       tags.each do |tag|
-        tag.sub!('#','')
+        tag = remove_non_tag_characters(tag)
         cloud[tag.downcase] ||= 0
         cloud[tag.downcase] += 1
       end
