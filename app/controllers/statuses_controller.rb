@@ -29,7 +29,7 @@ class StatusesController < ApplicationController
   end
 
   def search
-    
+    @term = params[:q]
   end
   
   def tagged
