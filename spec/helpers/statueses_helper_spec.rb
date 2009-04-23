@@ -23,6 +23,12 @@ describe StatusesHelper, '#format_status_message' do
     response = format_status_message(status, :highlight => 'ruby')
     response.should have_tag('span.highlight','ruby')
   end
+
+  it 'should not highlight search terms if there are hashtags present' do
+    status = mock_model(Status, :message => 'Test #ruby', :has_hashtag? => true)
+    response = format_status_message(status, :highlight => 'ruby')
+    response.should_not have_tag('span.highlight', 'ruby')
+  end
 end
 
 describe StatusesHelper, "#link_hash_tags" do

@@ -6,12 +6,16 @@ module StatusesHelper
   # Formats the <tt>status</tt> message.  Will convert any hashtag
   # ('#tag') into a link to the hashtag page.
   #
-  #   options[:highlight] => wraps the string with a highlighted background
+  #   options[:highlight] => wraps the string with a highlighted
+  #                          background.  Turned off when hashtags are present
   def format_status_message(status, options = {})
     response = status.message
-      
-    response = highlight_tokens(response, [options[:highlight]])  if options[:highlight]
-    response = link_hash_tags(response) if status.has_hashtag?
+
+    if status.has_hashtag?
+      response = link_hash_tags(response)
+    else
+      response = highlight_tokens(response, [options[:highlight]])  if options[:highlight]
+    end
     response
   end
 
