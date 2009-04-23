@@ -4,7 +4,7 @@
 img.gravatar { float:left; margin: 0 10px 0 0;}
 .smaller_project {font-size: 80%;}
 .icon-news { background-image: url(../../../images/news.png); }
-
+.icon-search { background-image: url(../images/magnifier.png); }
 
 #tag_cloud {text-align: center; font-size: 200%;}
 #tag_cloud .bank1 {font-size: 0.2em;}
