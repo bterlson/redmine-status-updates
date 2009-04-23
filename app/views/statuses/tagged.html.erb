@@ -10,5 +10,5 @@ end %>
 <%= render :partial => 'list', :object => @statuses %>
 
 <% content_for :header_tags do %>
-    <%= stylesheet_link_tag '/plugin_assets/redmine_status/stylesheets/redmine_status' %>
+    <%= stylesheet_link_tag 'redmine_status.css', :plugin => "redmine_status" %>
 <% end %>
