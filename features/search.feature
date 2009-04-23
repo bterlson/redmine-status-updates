@@ -32,3 +32,15 @@ Feature: Search
 
     Then I should see "Results"
     And I should see "11" updates
+
+  Scenario: Highlight search term
+    Given I am logged in
+    And I am a member of a project
+    And there are "6" statuses with the text "results"
+    And I am on the Search page
+
+    When I fill in "status-search" with "results"
+    And I submit the search
+
+    Then I should see "6" results highlighted
+

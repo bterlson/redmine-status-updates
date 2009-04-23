@@ -3,12 +3,16 @@ module StatusesHelper
     time.to_date == Date.today ? l(:label_today).titleize : format_date(time)
   end
 
-  def format_status_message(status)
-    if status.has_hashtag?
-      link_hash_tags(status.message)
-    else
-      status.message
-    end
+  # Formats the <tt>status</tt> message.  Will convert any hashtag
+  # ('#tag') into a link to the hashtag page.
+  #
+  #   options[:highlight] => wraps the string with a highlighted background
+  def format_status_message(status, options = {})
+    response = status.message
+      
+    response = highlight_tokens(response, [options[:highlight]])  if options[:highlight]
+    response = link_hash_tags(response) if status.has_hashtag?
+    response
   end
 
   # Returns a link to the specific project for the status
@@ -38,7 +42,6 @@ module StatusesHelper
   def remove_non_tag_characters(word)
     word.gsub(/[^[:alnum:]\-_]/,'')
   end
-
 
   def tag_cloud(tags, classes)
     max, min = 0, 0

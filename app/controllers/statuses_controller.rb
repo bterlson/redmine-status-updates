@@ -5,6 +5,8 @@ class StatusesController < ApplicationController
 
   before_filter :find_tag, :only => [:tagged]
 
+  helper :search
+
   # Print a list of all the developer statuses.
   # TODO: Pagination, xml/json feeds.
   def index

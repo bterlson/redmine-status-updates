@@ -226,6 +226,10 @@ Then /^I should see a form for changing my preference$/ do
   end
 end
 
+Then /^I should see "(.*)" results highlighted$/ do |count|
+  response.should have_tag("span.highlight", :count => count.to_i)
+end
+
 def current_email_address
   @current_user && @current_user.mail
 end
