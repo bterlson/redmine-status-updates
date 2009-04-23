@@ -238,3 +238,90 @@ describe StatusesController, "#tag_cloud" do
     assigns[:tags].should_not be_nil
   end
 end
+
+
+
+describe StatusesController, "#search without permission" do
+  before(:each) do
+    @current_user = mock_model(User, :admin? => false, :logged? => true, :language => :en, :allowed_to? => false)
+    User.stub!(:current).and_return(@current_user)
+  end
+  
+  it "should not be successful" do
+    get :search
+    response.should_not be_success
+  end
+
+  it "should render the 403 template" do
+    get :search
+    response.should render_template('common/403')
+  end
+end
+
+describe StatusesController, "#search with no term" do
+  before(:each) do
+    @current_user = mock_model(User, :admin? => false, :logged? => true, :language => :en, :allowed_to? => true)
+    User.stub!(:current).and_return(@current_user)
+
+    @project = mock_model(Project, :identifier => 'test-project', :id => 42)
+    controller.stub!(:find_project).and_return(@project)
+    controller.stub!(:project).and_return(@project)
+  end
+  
+  it "should be successful" do
+    get :search, :id => @project.id
+    response.should be_success
+  end
+
+  it "should render the search template" do
+    get :search, :id => @project.id
+    response.should render_template('search')
+  end
+
+  it "should not assign any Statuses" do
+    get :search, :id => @project.id
+    assigns[:statuses].should be_nil
+  end
+
+  it 'should not assign the term' do
+    get :search, :id => @project.id
+    assigns[:term].should be_blank
+  end
+end
+
+describe StatusesController, "#search with term" do
+  before(:each) do
+    @current_user = mock_model(User, :admin? => false, :logged? => true, :language => :en, :allowed_to? => true)
+    User.stub!(:current).and_return(@current_user)
+
+    @project = mock_model(Project, :identifier => 'test-project', :id => 42)
+    controller.stub!(:find_project).and_return(@project)
+    controller.stub!(:project).and_return(@project)
+  end
+  
+  it "should be successful" do
+    get :search, :id => @project.id, :q => 'term'
+    response.should be_success
+  end
+
+  it "should render the search template" do
+    get :search, :id => @project.id, :q => 'term'
+    response.should render_template('search')
+  end
+
+  it "should assign Statuses for the project" do
+    statuses = []
+    5.times do
+      statuses << mock_model(Status)
+    end
+    Status.should_receive(:search).with('term', @project).and_return(statuses)
+
+    get :search, :id => @project.id, :q => 'term'
+    assigns[:statuses].should eql(statuses)
+  end
+
+  it 'should assign the term' do
+    get :search, :id => @project.id, :q => 'term'
+    assigns[:term].should eql('term')
+  end
+end

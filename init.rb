@@ -16,7 +16,7 @@ Redmine::Plugin.register :status do
   version '0.1.1'
   
   project_module :statuses do
-    permission :view_statuses, {:statuses => [:index, :tagged, :tag_cloud], :status_notifications => [:edit, :update]}
+    permission :view_statuses, {:statuses => [:index, :tagged, :tag_cloud, :search], :status_notifications => [:edit, :update]}
     permission :create_statuses, {:statuses => [:new, :create]}
   end
  

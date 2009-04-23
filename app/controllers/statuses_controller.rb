@@ -28,7 +28,10 @@ class StatusesController < ApplicationController
     redirect_to :action => 'index', :id => project
   end
 
-
+  def search
+    
+  end
+  
   def tagged
     @statuses = Status.recently_tagged_with(@tag, project)
   end
