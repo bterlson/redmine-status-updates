@@ -66,6 +66,10 @@ Given /^I am on the Hashtag cloud page for the project$/ do
   visit url_for(:controller => 'statuses', :action => 'tag_cloud', :id => @project.id)
 end
 
+Given /^I am on the Search page$/ do
+  visit url_for(:controller => 'statuses', :action => 'search')
+end
+
 
 Given /^there are "(.*)" statuses$/ do |number|
   number.to_i.times do
@@ -93,6 +97,12 @@ Given /^there are "(.*)" statuses for another project$/ do |number|
 
   number.to_i.times do
     Status.make(:project => @project_two)
+  end
+end
+
+Given /^there are "(.*)" statuses with the text "(.*)"$/ do |number, content|
+  number.to_i.times do
+    Status.make(:project => @project, :message => content)
   end
 end
 
