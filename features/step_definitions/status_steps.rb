@@ -106,6 +106,17 @@ Given /^there are "(.*)" statuses with the text "(.*)"$/ do |number, content|
   end
 end
 
+Given /^there are "(.*)" statuses for another project with the text "(.*)"$/ do |number, content|
+  unless @project_two
+    @project_two = make_project_with_enabled_modules
+  end
+
+  number.to_i.times do
+    Status.make(:project => @project_two, :message => content)
+  end
+
+end
+
 Given /^I have choosen the '(.*)' notification option$/ do |option|
   StatusNotification.make(:user => @current_user, :option => option)
 end
