@@ -297,6 +297,7 @@ describe StatusesController, "#search with term" do
     @project = mock_model(Project, :identifier => 'test-project', :id => 42)
     controller.stub!(:find_project).and_return(@project)
     controller.stub!(:project).and_return(@project)
+    Status.stub!(:search)
   end
   
   it "should be successful" do

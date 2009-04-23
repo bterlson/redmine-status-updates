@@ -6,7 +6,7 @@
   <% form_tag({}, :method => :get) do %>
   <p><%= text_field_tag 'q', h(@term), :size => 60, :id => 'status-search' %></p>
 
-  <p><%= submit_tag l(:button_submit), :name => 'submit' %></p>
+  <p><%= submit_tag l(:button_submit), :name => 'submit', :id => 'status-submit' %></p>
   <% end %>
 </div>
 

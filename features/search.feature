@@ -12,8 +12,7 @@ Feature: Search
     When I follow "Search statuses"
     Then I am on the Search page
     When I fill in "status-search" with "results"
-    And I press "Submit"
+    And I submit the search
 
-    Then I am on the Search page
-    And I should see "Results"
+    Then I should see "Results"
     And I should see "6" updates

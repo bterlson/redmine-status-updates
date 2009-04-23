@@ -148,6 +148,10 @@ When /^the status notification task is run$/ do
   StatusNotification.notify
 end
 
+When /^I submit the search$/ do
+  When 'I press "status-submit"'
+end
+
 Then /^my preference should be "(.*)"$/ do |value|
   @current_user.status_notification.should_not be_nil
   @current_user.status_notification.option.should eql(value)

@@ -234,3 +234,70 @@ describe Status, "tagged_with without a project" do
     Status.recently_tagged_with(@tag, nil)
   end
 end
+
+describe Status, "#search without a project" do
+  before(:each) do
+    @term = 'testing'
+    Status.stub!(:visible_to_user).and_return(Status)
+    Status.stub!(:recent).and_return(Status)
+    Status.stub!(:by_date).and_return(Status)
+    Status.stub!(:with_message_containing).and_return(Status)
+  end
+  
+  it 'should get up to 100 updates' do
+    Status.should_receive(:recent).with(100).and_return(Status)
+    Status.search(@term, nil)
+  end
+
+  it 'should order the updated by date' do
+    Status.should_receive(:by_date).and_return(Status)
+    Status.search(@term, nil)
+  end
+
+  it 'should get updates matching the term' do
+    Status.should_receive(:with_message_containing).with(@term).and_return(Status)
+    Status.search(@term, nil)
+  end
+
+  it 'should restrict the user to their own projects' do
+    Status.should_receive(:visible_to_user).with(User.current, nil).and_return(Status)
+    Status.search(@term, nil)
+  end
+end
+
+describe Status, "#search with a project" do
+  before(:each) do
+    @term = 'testing'
+    @project = mock_model(Project)
+    Status.stub!(:visible_to_user).and_return(Status)
+    Status.stub!(:recent).and_return(Status)
+    Status.stub!(:by_date).and_return(Status)
+    Status.stub!(:with_message_containing).and_return(Status)
+    Status.stub!(:for_project).and_return(Status)
+  end
+  
+  it 'should get up to 100 updates' do
+    Status.should_receive(:recent).with(100).and_return(Status)
+    Status.search(@term, @project)
+  end
+
+  it 'should order the updated by date' do
+    Status.should_receive(:by_date).and_return(Status)
+    Status.search(@term, @project)
+  end
+
+  it 'should get updates matching the term' do
+    Status.should_receive(:with_message_containing).with(@term).and_return(Status)
+    Status.search(@term, @project)
+  end
+
+  it 'should restrict the user to their own projects' do
+    Status.should_receive(:visible_to_user).with(User.current, @project).and_return(Status)
+    Status.search(@term, @project)
+  end
+
+  it 'should get updates only for the project' do
+    Status.should_receive(:for_project).and_return(Status)
+    Status.search(@term, @project)
+  end
+end

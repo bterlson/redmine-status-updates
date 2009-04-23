@@ -33,6 +33,12 @@ class Status < ActiveRecord::Base
     }
   }
 
+  named_scope :with_message_containing, lambda {|term|
+    {
+      :conditions => ["message LIKE (?)", "%" + term.to_s + "%"]
+    }
+  }
+
   named_scope :since, lambda {|date|
     {
       :conditions => ["created_at >= ?", date]
@@ -73,6 +79,14 @@ class Status < ActiveRecord::Base
       return self.visible_to_user(User.current, project).recent(100).by_date.for_project(project).tagged_with(tag)
     else
       return self.visible_to_user(User.current, project).recent(100).by_date.tagged_with(tag)
+    end
+  end
+
+  def self.search(term, project=nil)
+    if project
+      return self.visible_to_user(User.current, project).recent(100).by_date.for_project(project).with_message_containing(term)
+    else
+      return self.visible_to_user(User.current, project).recent(100).by_date.with_message_containing(term)
     end
   end
 

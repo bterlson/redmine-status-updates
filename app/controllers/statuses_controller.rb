@@ -30,6 +30,7 @@ class StatusesController < ApplicationController
 
   def search
     @term = params[:q]
+    @statuses = Status.search(@term, project) unless @term.blank?
   end
   
   def tagged
