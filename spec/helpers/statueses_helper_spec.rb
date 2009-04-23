@@ -9,12 +9,19 @@ end
 
 describe StatusesHelper, '#format_status_message' do
   include StatusesHelper
+  include SearchHelper
 
   it 'should link any hash tags in the Status' do
     status = mock_model(Status, :message => 'Test #ruby', :has_hashtag? => true)
     self.should_receive(:link_hash_tags).with(status.message)
 
     format_status_message(status)
+  end
+
+  it 'should highlight any search terms in the Status' do
+    status = mock_model(Status, :message => 'Test ruby', :has_hashtag? => false)
+    response = format_status_message(status, :highlight => 'ruby')
+    response.should have_tag('span.highlight','ruby')
   end
 end
 
