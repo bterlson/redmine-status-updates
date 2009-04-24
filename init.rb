@@ -11,6 +11,7 @@ end
 
 require 'status_layout_hooks'
 require 'status_project_hooks'
+require 'status_welcome_hooks'
 
 Redmine::Plugin.register :status do
   name 'Redmine Status Updates'

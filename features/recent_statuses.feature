@@ -11,3 +11,14 @@ Feature: Recent Statuses
 
     Then I should see "Status Updates"
     And I should see "5" updates in the left content
+
+  Scenario: Recent statuses on the Homepage
+    Given I am logged in
+    And I am a member of a project
+    And there are "2" statuses
+    And I am a member of another project
+    And there are "4" statuses for another project
+    And I am on the Homepage
+
+    Then I should see "Status Updates"
+    And I should see "5" updates in the left content
