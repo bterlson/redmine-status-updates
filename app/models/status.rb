@@ -66,11 +66,11 @@ class Status < ActiveRecord::Base
     end
   end
 
-  def self.recent_updates_for(project=nil)
+  def self.recent_updates_for(project=nil, number=100)
     if project
-      return self.visible_to_user(User.current, project).recent(100).by_date.for_project(project)
+      return self.visible_to_user(User.current, project).recent(number).by_date.for_project(project)
     else
-      return self.visible_to_user(User.current, project).recent(100).by_date
+      return self.visible_to_user(User.current, project).recent(number).by_date
     end
   end
   

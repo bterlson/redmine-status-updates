@@ -70,6 +70,14 @@ Given /^I am on the Search page$/ do
   visit url_for(:controller => 'statuses', :action => 'search')
 end
 
+Given /^I am on the Project Overview page$/ do
+  unless @project
+    @project = make_project_with_enabled_modules
+  end
+  
+  visit url_for(:controller => 'projects', :action => 'show', :id => @project.id)
+end
+
 
 Given /^there are "(.*)" statuses$/ do |number|
   number.to_i.times do
@@ -198,6 +206,12 @@ end
 
 Then /^I should see "(.*)" statuses in the email$/ do |count|
   current_email.body.should have_tag('p.status_message', :count => count.to_i)
+end
+
+Then /^I should see "(.*)" updates in the left content$/ do |count|
+  response.should have_tag("div.box#statuses") do
+    with_tag("dd.status_message", :count => count.to_i)
+  end
 end
 
 Then /^I should see a "top" menu item called "Status updates"$/ do

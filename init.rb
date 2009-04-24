@@ -9,6 +9,9 @@ Dispatcher.to_prepare do
   ActiveRecord::Base.observers << :status_observer
 end
 
+require 'status_layout_hooks'
+require 'status_project_hooks'
+
 Redmine::Plugin.register :status do
   name 'Redmine Status Updates'
   author 'Brian Terlson'
