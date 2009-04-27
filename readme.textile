@@ -4,8 +4,32 @@ This is a plugin for "Redmine":http://www.redmine.org that allows users to creat
 
 h2. Installing
 
-Simply follow the instructions found on the "Redmine Wiki":http://www.redmine.org/wiki/redmine/Plugins.  One caveat is that the plugin expect to find a stylesheet under the directory <notextile>REDMINE_DIR/plugin_assets/redmine_status/...</notextile> so either name the plugin directory redmine_status or rename the folder generated after you start up your server from whatever you named it to redmine_status.
+# Follow the Redmine plugin installation steps at: http://www.redmine.org/wiki/redmine/Plugins  Make sure the plugin is installed to @vendor/plugins/redmine_status@
+# Run the plugin migrations +rake db:migrate_plugins+
+# Restart your Redmine web servers (e.g. mongrel, thin, mod_rails)
+# Login and configure your permissions for Status updates in the Administration panel
+# Enable the "Statuses" module for each project you'd like to use it on
+# (Optionally) Schedule the Delayed Notifications rake task using something like cron, @rake redmine_status:delayed_notifications RAILS_ENV=production@.  It's recommended to run this every hour.
 
 h2. Usage
 
-Enable the "Statuses" module on the project settings page.  From there on out, usage should be fairly obvious.  Create new status updates by clicking the "Update your status" link on the "Status Updates" page.  Oh, and also, enjoy!
+You can view the Status Updates for a project by using the "Status updates" tab on the project.  Or you can view all updates by using the "Status updates" link on the top left menu.
+
+h3. Email Notification of updates
+
+Each user can configure their email notification preferences.
+
+* Realtime - email notifications are sent immediately when a user posts an update
+* Hourly - email notifications are sent as a single digest email every hour
+* 8 Hours - email notifications are sent as a single digest email every 8 hours
+* Daily - email notifications are sent as a single digest email once every day
+
+The scheduling and sending of the email will be done by the rake task and cronjob (above).
+
+h3. Hashtag tagging
+
+If an update includes a word prefixed with a hash, then it will be tagged.  Tagging updates is a quick and easy way to categories messages.  The list of updates will then be able to be filtered by tags and the updates will appear in the Tag cloud.
+
+h3. License
+
+This plugin is licensed under the GNU GPL v2.  See COPYRIGHT and COPYING for details.
