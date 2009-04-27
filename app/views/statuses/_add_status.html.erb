@@ -1,5 +1,5 @@
 <div id="add-status" style="display:none;">
-  <h2>Update your status</h2>
+  <h2><%= l(:redmine_status_update_your_status) %></h2>
   <% labelled_tabular_form_for :status, @status, :url => { :controller => 'statuses', :action => 'create', :id => @project}, :html => {:id => 'status'} do |f| %>
     <div class="box tabular">
       <p><%=f.text_field :message, :label => "Message", :size => 60, :required => true %></p>

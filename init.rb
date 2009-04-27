@@ -24,6 +24,6 @@ Redmine::Plugin.register :status do
     permission :create_statuses, {:statuses => [:new, :create]}
   end
  
-  menu :top_menu, "Status Updates", :controller => 'statuses', :action => 'index', :id => nil
-  menu :project_menu, "Status Updates", :controller => 'statuses', :action => 'index'
+  menu :top_menu, "Status Updates", :controller => 'statuses', :action => 'index', :id => nil, :caption => :redmine_status_title
+  menu :project_menu, "Status Updates", :controller => 'statuses', :action => 'index', :caption => :redmine_status_title
 end

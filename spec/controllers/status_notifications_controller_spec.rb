@@ -53,7 +53,7 @@ describe StatusNotificationsController, "#update" do
 
     it 'should display a flash message' do
       post :update, :system_notification => {:option => 'hourly'}
-      flash[:notice].should include('Preferences saved')
+      flash[:notice].should include('Preference saved')
     end
 
     it 'should display the saved option in the flash message' do
@@ -79,7 +79,7 @@ describe StatusNotificationsController, "#update" do
 
     it 'should display a flash message' do
       post :update, :system_notification => {:option => 'hourly'}
-      flash[:error].should eql('Could not save your preference.  Please try again')
+      flash[:error].should eql('Could not save your preference.  Please try again.')
     end
   end
 end

@@ -1,6 +1,6 @@
 <%= status_menu %>
 
-<h2>Notification Preference</h2>
+<h2><%= l(:redmine_status_notification_preference) %></h2>
 
 <% labelled_tabular_form_for :status_notification, @notification, :url => { :controller => 'status_notifications', :action => 'update'}, :html => {:id => 'notification_preference'} do |f| %>
   <div class="box tabular">

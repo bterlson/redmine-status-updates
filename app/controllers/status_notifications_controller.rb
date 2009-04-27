@@ -15,10 +15,10 @@ class StatusNotificationsController < ApplicationController
 
     @notification.option = params[:status_notification][:option] if params[:status_notification]
     if @notification.save
-      flash[:notice] = "Preferences saved as #{@notification.option_to_string}."
+      flash[:notice] = l(:redmine_status_saved_notification_preference, @notification.option_to_string)
       redirect_to :controller => 'status_notifications', :action => 'edit'
     else
-      flash[:error] = 'Could not save your preference.  Please try again'
+      flash[:error] = l(:redmine_status_failed_to_save_notification_preference)
       render :action => 'edit'
     end
   end
