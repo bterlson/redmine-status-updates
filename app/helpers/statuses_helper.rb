@@ -64,10 +64,10 @@ module StatusesHelper
 
   def status_menu(&block)
     content = ''
-    content << link_to("All statuses", {:controller => 'statuses', :action => 'index', :id => @project}, :class => 'icon icon-index')
-    content << link_to("Tag Cloud", {:controller => 'statuses', :action => 'tag_cloud', :id => @project}, :class => 'icon icon-comment')
-    content << link_to("Search statuses", {:controller => 'statuses', :action => 'search', :id => @project}, :class => 'icon icon-search')
-    content << link_to("Notification Preferences", {:controller => 'status_notifications', :action => 'edit'}, :class => 'icon icon-news')
+    content << link_to(l(:redmine_status_all_status_plural), {:controller => 'statuses', :action => 'index', :id => @project}, :class => 'icon icon-index')
+    content << link_to(l(:redmine_status_tag_cloud), {:controller => 'statuses', :action => 'tag_cloud', :id => @project}, :class => 'icon icon-comment')
+    content << link_to(l(:redmine_status_search_statuses), {:controller => 'statuses', :action => 'search', :id => @project}, :class => 'icon icon-search')
+    content << link_to(l(:redmine_status_notification_preference), {:controller => 'status_notifications', :action => 'edit'}, :class => 'icon icon-news')
 
     block_content = yield if block_given?
     content << block_content if block_content
