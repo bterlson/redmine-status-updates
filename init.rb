@@ -13,7 +13,7 @@ require 'status_layout_hooks'
 require 'status_project_hooks'
 require 'status_welcome_hooks'
 
-Redmine::Plugin.register :status do
+Redmine::Plugin.register :redmine_status do
   name 'Redmine Status Updates'
   author 'Brian Terlson'
   description 'Allow users to add small status updates about what they are working on or finished or what-have-you.'
