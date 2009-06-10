@@ -1,0 +1,12 @@
+en:
+  field_option: Option
+  redmine_status_title: Status updates
+  redmine_status_update_your_status: Update your status
+  redmine_status_developer_status: Developer Status
+  redmine_status_developer_status_tagged_with: Developer Status tagged with %s
+  redmine_status_tag_cloud: Tag Cloud
+  redmine_status_notification_preference: Notification Preference
+  redmine_status_saved_notification_preference: Preference saved as %s.
+  redmine_status_failed_to_save_notification_preference: Could not save your preference.  Please try again.
+  redmine_status_new_update: posted a new status update
+  redmine_status_new_update_plurl: 'Here are the recent status updates for you since'
