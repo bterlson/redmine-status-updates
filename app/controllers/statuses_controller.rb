@@ -22,7 +22,7 @@ class StatusesController < ApplicationController
   # TODO: Accept XML data.
   
   def create
-    @status = Status.new(params[:status])
+    @status = Status.new(params[:status].reject{ |k,v| k == :project_id })
     @status.user_id = User.current.id
     @status.project_id = check_project_id(@status)
     @status.save
