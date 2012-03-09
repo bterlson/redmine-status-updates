@@ -5,7 +5,7 @@ class Status < ActiveRecord::Base
   validates_presence_of :project_id
   extend StatusesHelper
   
-  attr_protected :project_id
+  #attr_protected :project_id
   
   Hashtag = /(#\S+)/
 

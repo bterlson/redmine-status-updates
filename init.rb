@@ -4,6 +4,9 @@ require 'redmine'
 require 'dispatcher'
 require 'status_user_patch'
 
+require_dependency 'principal'
+require_dependency 'user'
+
 Dispatcher.to_prepare do
   User.send(:include, ::Plugin::Status::User)
   ActiveRecord::Base.observers << :status_observer
